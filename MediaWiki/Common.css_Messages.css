@@ -1,0 +1,96 @@
+/* CSS placed here will be applied to all skins */
+/* <source lang="css"> /* */
+/* Messagebox templates */
+.messagebox { border:1px solid #aaaaaa; background-color:#f9f9f9; width:80%; margin:0em auto 1em auto; padding:0.2em; }
+.messagebox.merge { border:1px solid #c0b8cc; background-color:#f0e5ff; text-align:center; }
+.messagebox.cleanup { border:1px solid #9f9fff; background-color:#efefff; text-align:center; }
+.messagebox.standard-talk { border:1px solid #c0c090; background-color:#f8eaba; margin: 4px auto; }
+.messagebox.small { width:238px; font-size:85%; float:right; clear:both; margin:0em 0em 1em 1em; line-height:1.25em; }
+.messagebox.small-talk { width:238px; font-size:85%; float:right; clear:both; margin:0em 0em 1em 1em; line-height:1.25em; background:#F8EABA; }
+
+/* For old WikiProject banners inside banner shells. */
+.mbox-inside .standard-talk,
+.messagebox.nested-talk {
+    border: 1px solid #c0c090;
+    background-color: #f8eaba;
+    width: 100%;
+    margin: 2px 0;
+    padding: 2px;
+}
+
+/* Footer and header message box styles */
+table.fmbox { clear:both; margin:0.2em 0em; width:100%; border:1px solid #aaaaaa; background:#f9f9f9; }
+table.fmbox-system { background:#f9f9f9; }
+table.fmbox-warning { border: 1px solid #bb7070; background: #ffdbdb; } /* Dark pink, Pink */
+table.fmbox-editnotice { background: transparent; }
+
+/* Cell sizes for ambox/tmbox/imbox/cmbox/ombox/fmbox/dmbox message boxes */
+td.mbox-image { border:none; padding:2px 0em 2px 0.9em; text-align:center; }
+th.mbox-text, td.mbox-text { border:none; padding:0.25em 0.9em; width:100%; }
+td.mbox-imageright { border:none; padding:2px 0.9em 2px 0em; text-align:center;  }
+td.mbox-empty-cell { border:none; padding:0px; width:1px; }
+
+/* Article message box styles */
+table.ambox { margin:0px 10%; border-collapse:collapse; border:1px solid #aaaaaa; border-left:10px solid #1e90ff; background:#fbfbfb; }
+table.ambox th.mbox-text, table.ambox td.mbox-text { padding:0.25em 0.5em; }
+table.ambox td.mbox-image { padding:2px 0em 2px 0.5em; }
+table.ambox td.mbox-imageright { padding: 2px 0.5em 2px 0em; }
+table.ambox-notice	{ border-color:#1e90ff; }
+table.ambox-speedy	{ border-color:#b22222; background:#ffeeee; }
+table.ambox-delete	{ border-color:#b22222; }
+table.ambox-content	{ border-color:#f28500; }
+table.ambox-style	{ border-color:#f4c430; }
+table.ambox-move	{ border-color:#9932cc; }
+table.ambox-protection	{ border-color:#bbbbaa; }
+
+/* Image message box styles */
+table.imbox { margin:4px 10%; border-collapse:collapse; border:3px solid #1e90ff; background:#fbfbfb; }
+table.imbox .mbox-text .imbox { margin: 0 -0.5em; }
+.mbox-inside table.imbox { margin: 4px; }
+table.imbox-notice	{ border-color:#1e90ff; }
+table.imbox-speedy	{ border-color:#b22222; background:#ffeeee; }
+table.imbox-delete	{ border-color:#b22222; }
+table.imbox-content	{ border-color:#f28500; }
+table.imbox-style	{ border-color:#f4c430; }
+table.imbox-move	{ border-color:#9932cc; }
+table.imbox-protection	{ border-color:#bbbbaa; }
+table.imbox-license	{ border-color:#8888aa; background: #f7f8ff; }
+table.imbox-featured	{ border-color:#cba135; }
+ 
+/* Category message box styles */
+table.cmbox { margin:3px 10%; border-collapse:collapse; border:1px solid #aaaaaa; background:#dfe8ff; }
+table.cmbox-notice	{ background:#d8e8ff; }
+table.cmbox-speedy	{ margin-top:4px; margin-bottom:4px; border:4px solid #b22222; background:#ffdbdb; }
+table.cmbox-delete	{ background: #ffdbdb; }
+table.cmbox-content	{ background: #ffe7ce; }
+table.cmbox-style	{ background: #fff9db; }
+table.cmbox-move	{ background: #e4d8ff; }
+table.cmbox-protection	{ background: #efefe1; }
+
+/* Other pages message box styles */
+table.ombox { margin:4px 10%; border-collapse:collapse; border:1px solid #aaaaaa; background:#f9f9f9; }
+table.ombox-notice  { border:1px solid #aaaaaa; }
+table.ombox-speedy  { border:2px solid #b22222; /* Red */ background:#ffeeee; /* Pink */ }
+table.ombox-delete  { border:2px solid #b22222; /* Red */ }
+table.ombox-content { border:1px solid #f28500; /* Orange */ }
+table.ombox-style   { border:1px solid #f4c430; /* Yellow */ }
+table.ombox-move    { border:1px solid #9932cc; /* Purple */ }
+table.ombox-protection { border:2px solid #bba; /* Gray-gold */ }
+ 
+/* Talk page message box styles */
+table.tmbox { margin:4px 10%; border-collapse:collapse; border:1px solid #c0c090; background:#f8eaba; }
+.mediawiki .mbox-inside .tmbox { margin:2px 0; width:100%; }
+.mbox-inside .messagebox-small.tmbox { line-height:1.5em; font-size:100%; }
+
+table.tmbox-speedy  { border:2px solid #b22222; /* Red */ background: #ffeeee; /* Pink */ }
+table.tmbox-delete  { border:2px solid #b22222; /* Red */ }
+table.tmbox-content { border:2px solid #f28500; /* Orange */ }
+table.tmbox-style   { border:2px solid #f4c430; /* Yellow */ }
+table.tmbox-move    { border:2px solid #9932cc; /* Purple */ }
+table.tmbox-protection { border:1px solid #c0c090; /* Gray-brown */ }
+
+/* Standard talk template style */
+.Talk-Notice  { border:1px solid #C0C090; background-color:#F8EABA; width:85%; border-spacing:3px; margin:0px auto 3px auto; }
+.Talk-Notice td { background: inherit; }
+
+/* </source> */
