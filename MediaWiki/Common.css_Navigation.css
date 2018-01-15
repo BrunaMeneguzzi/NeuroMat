@@ -1,0 +1,45 @@
+/* CSS placed here will be applied to all skins */
+/* Default skin for navigation boxes */
+table.navbox { border:1px solid #aaaaaa; width:100%; margin:auto; clear:both; font-size:88%; text-align:center; padding:1px; }
+table.navbox + table.navbox { margin-top:0px; border-top:0px; }
+.navbox-title, .navbox-abovebelow, table.navbox th { text-align:center; padding-left:1em; padding-right:1em; }
+.navbox-group { white-space:nowrap; text-align:right; font-weight:bold; padding-left:1em; padding-right:1em; }
+.navbox, .navbox-subgroup { background: #fdfdfd; /* Background color */ }
+.navbox-list { border-color:#fdfdfd; /* Must match background color */ }
+.navbox-title, table.navbox th { background: #ccccff; /* Level 1 color */ }
+.navbox-abovebelow, .navbox-group, .navbox-subgroup .navbox-title { background:#ddddff; /* Level 2 color */ }
+.navbox-subgroup .navbox-group, .navbox-subgroup .navbox-abovebelow { background:#e6e6ff; /* Level 3 color */ }
+.navbox-even { background:#f7f7f7; /* Even row striping */ }
+.navbox-odd { background: transparent; /* Odd row striping */ }
+
+/* In navboxes, the show/hide button balances the vde links from [[Template:Tnavbar]], so they need to be the same width. */
+.navbox .collapseButton { width: 6em; }
+
+/* For [[MediaWiki:Navigation.js]] */
+table.collapsed tr.collapsible { display: none; }
+
+.shortcutbox { background:#0645AD; color:#ffffff; margin:0.5em 0em; padding:3px; text-align:center; font-weight:bold; }
+.shortcutbox a { color:#ffffff !important; font-weight:bold; background:none !important; padding:0em !important; }
+.shortcutbox-right { float:right; margin-left:1em; }
+.shortcutbox-left { float:left; margin-right: 1em; }
+
+.toclimit-1 .toclevel-1 ul, .toclimit-2 .toclevel-2 ul, .toclimit-3 .toclevel-3 ul,
+.toclimit-4 .toclevel-4 ul, .toclimit-5 .toclevel-5 ul { display:none; }
+
+/* Add arrows to toggle-blocks for collapsible elements */
+.mw-collapsible-toggle-arrow.mw-collapsible-toggle-expanded {
+ padding-left: 20px !important;
+ background-image: url('//upload.wikimedia.org/wikipedia/commons/1/10/MediaWiki_Vector_skin_action_arrow.png');
+ background-repeat: no-repeat;
+ background-position: center left;
+ float: none;
+ font-weight: bold;
+}
+.mw-collapsible-toggle-arrow.mw-collapsible-toggle-collapsed {
+ padding-left: 20px !important;
+ background-image: url('//upload.wikimedia.org/wikipedia/commons/4/41/MediaWiki_Vector_skin_right_arrow.png');
+ background-repeat: no-repeat;
+ background-position: center left;
+ float: none;
+ font-weight: bold; 
+}
