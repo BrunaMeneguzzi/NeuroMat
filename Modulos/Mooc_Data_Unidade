@@ -1,0 +1,7 @@
+local inheritance = require("Módulo:Herança");
+local Item = require("Módulo:Mooc/Data/Item");
+
+local Unit = inheritance.extend(Item);
+Unit.TYPE = Item.Type("unit");
+
+return Unit;
