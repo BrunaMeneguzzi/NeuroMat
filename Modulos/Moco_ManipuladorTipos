@@ -1,0 +1,33 @@
+local inheritance = require("Módulo:Herança");
+
+local TypeHandler = inheritance.extend(inheritance.Class);
+
+function TypeHandler:init(type, parserPath, templatePath)
+  self.type = type;
+  self.parserPath = parserPath;
+  self.templatePath = templatePath;
+end
+
+function TypeHandler:getType()
+  return self.type;
+end
+
+function TypeHandler:getParser()
+  if self.parser == nil then
+    self.parser = require(self.parserPath);
+  end
+  return self.parser;
+end
+
+function TypeHandler:getTemplate()
+  if self.template == nil then
+    self.template = require(self.templatePath);
+  end
+  return self.template;
+end
+
+function TypeHandler:handlesType(typeIdentifier)
+  return self.type:isType(typeIdentifier);
+end
+
+return TypeHandler;
