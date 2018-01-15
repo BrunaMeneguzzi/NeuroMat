@@ -1,0 +1,64 @@
+local inheritance = require("Módulo:Herança");
+local UnitTemplate = require("Módulo:Mooc/Modelo/Unidade");
+local Template = inheritance.extend(UnitTemplate);
+
+Template.PATH = 'Mooc/Lição';
+
+function Template:loadPageContent(mooc, index, templateParams)
+	UnitTemplate:loadPageContent(mooc, index, templateParams);
+	local item = index["item"];
+	
+	self:loadSectionNavigation(item, templateParams);
+	
+	-- children
+	self:loadChildren(item, templateParams);
+end
+
+function Template:loadSectionNavigation(item, templateParams)
+	local url = item:getUrl();
+	local nNav = mw.html.create('div'):attr('id', 'item-navigation'):addClass('border-box');
+	nNav:node(self:renderSectionLink(url, 'learningGoals'));
+	nNav:node(self:renderSectionLink(url, 'units'));
+	nNav:node(self:renderSectionLink(url, 'furtherReading'));
+	nNav:node(self:renderSectionLink(url, 'discussion'));
+	templateParams['sectionNavigation'] = tostring(nNav);
+end
+
+function Template:loadChildren(item, templateParams)
+	local children = item:getChildren();
+	local container = mw.html.create('div');
+	container:addClass('children');
+	if children ~= nil then
+		for _,v in ipairs(children) do
+			container:node(self:renderChildUnit(v));
+		end
+	end
+
+	-- button create child
+	container:node(self:renderCreateUnitLink());
+	container:node(self:renderCreateUnitBox());
+	
+	templateParams['children'] = tostring(container);
+end
+
+function Template:renderCreateUnitLink()
+	local node = mw.html.create('div');
+	node:attr('id', 'addUnit'):addClass('child'):css('display', 'none');
+	local video = node:tag('div');
+	video:addClass('video');
+	local img = video:tag('div'):tag('span'):wikitext('[[File:AddMoocItem.png]]');
+	
+	local title = node:tag('div');
+	title:addClass('title');
+	title:wikitext('Adicionar Unidade');
+	
+	return node;
+end
+
+function Template:renderCreateUnitBox()
+	local modal = mw.html.create('div');
+	modal:attr('id', 'modal-add-unit-addUnit'):addClass('modal-box'):css('display', 'none');
+	return modal;
+end
+
+return Template;
