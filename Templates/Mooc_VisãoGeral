@@ -1,28 +1,38 @@
-__NOTOC__
+<noinclude>__NOTOC__</noinclude>
 
-<div id="resource-loader" style="display:none">Utilizador:BMNeuroMat/mooc.css,Utilizador:BMNeuroMat/mooc.js</div>
+<div id="addin-mooc">
 
-<h1>MOOC Module</h1>
-  This module allows you to add a MOOC and see all MOOCs available at Wikiversity.
-  Use the plus button below to add a MOOC. If you have questions concerning the usage please visit the [[Mooc-Module|MOOC module documentation]].
+<div id="baseUrl" style="display:none">{{{baseUrl}}}</div>
+<div id="indexUrl" style="display:none">{{{indexUrl}}}</div>
 
-<div id="mooc-content-wrapper">
-  <div id="mooc-content" class="border-box" style="margin-right:0">
+<div class="actions">
+*[[{{{indexUrl}}}|Editar o índice do MOOC]]
+</div>
+
+<h1>{{{title}}}</h1>
+
+<div id="content-wrapper">
+  <div id="mooc-content" class="border-box">
 <!-- MOOC CONTENT START -->
-
+{{{sectionNavigation}}}
 <div id="sections">
-  <div id="moocs" class="section">
-    <div class="header">
-      <div class="actions">
-<!-- TODO -->
-      </div>
-      <h2>MOOCs</h2>
+  <div id="lessons" class="section">
+    <div class="header border-box">
+      <div class="icon">[[File:Wikiversity-Mooc-Icon-Associated-units.svg|32x32px|link=]]</div>
+      <h2>Lições</h2>
+      <div class="actions"><!-- TODO --></div>
     </div>
     <div class="content collapsible">
 {{{children}}}
     </div>
   </div>
-</div>
+
 <!-- MOOC CONTENT END -->
 </div>
+</div>
+
+<div id="navigation-wrapper">
+{{{navigation}}}
+</div>
+
 </div>
