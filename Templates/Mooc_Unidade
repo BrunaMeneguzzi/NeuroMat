@@ -1,0 +1,101 @@
+__NOTOC__
+<div id="addin-mooc">
+
+<div id="section" style="display:none">{{{section}}}</div>
+<div id="baseUrl" style="display:none">{{{baseUrl}}}</div>
+<div id="indexUrl" style="display:none">{{{indexUrl}}}</div>
+<div id="path" style="display:none">{{{path}}}</div>
+
+<div class="actions">
+*[[{{{indexUrl}}}|Editar o índice do MOOC]]
+</div>
+
+<h1>{{{title}}}</h1>
+
+<div id="content-wrapper">
+  <div id="mooc-content" class="border-box">
+<!-- MOOC CONTENT START -->
+{{{sectionNavigation}}}
+<div id="sections">
+
+  <div id="video" class="section">
+    <div class="header border-box">
+      <div class="actions">
+        <div class="btn-edit">[[File:Wikiversity-Mooc-Icon-Edit.svg|32x32px|link=Mooc-Module]]</div>
+        <div class="btn-ask-question">[[File:Wikiversity-Mooc-Icon-Ask.svg|32x32px|link=Mooc-Module]]</div>
+        <div id="modal-edit-video" class="modal-box" style="display:none"></div>
+      </div>
+      <div class="icon">[[File:Wikiversity-Mooc-Icon-Video.svg|32x32px|link=]]</div>
+      <h2>Vídeo</h2>
+    </div>
+    <div class="content collapsible">
+{{{video}}}
+    </div>
+  </div>
+
+  <div id="script" class="section">
+    <div class="header border-box">
+      <div class="actions">
+        <div class="btn-edit">[[File:Wikiversity-Mooc-Icon-Edit.svg|32x32px|link=http://pt.wikiversity.org/w/index.php?title={{{scriptUrl}}}&action=edit]]</div>
+        <div class="btn-ask-question">[[File:Wikiversity-Mooc-Icon-Ask.svg|32x32px|link=Mooc-Module]]</div>
+        <div id="modal-edit-script" class="modal-box" style="display:none"></div>
+      </div>
+      <div class="icon">[[File:Wikiversity-Mooc-Icon-Script.svg|32x32px|link=]]</div>
+      <h2>Roteiro</h2>
+    </div>
+    <div class="content collapsible">
+{{:{{{scriptUrl}}}}}
+    </div>
+  </div>
+
+  <div id="quiz" class="section">
+    <div class="header border-box">
+      <div class="actions">
+        <div class="btn-edit">[[File:Wikiversity-Mooc-Icon-Edit.svg|32x32px|link=http://pt.wikiversity.org/w/index.php?title={{{quizUrl}}}&action=edit]]</div>
+        <div class="btn-ask-question">[[File:Wikiversity-Mooc-Icon-Ask.svg|32x32px|link=Mooc-Module]]</div>
+        <div id="modal-edit-quiz" class="modal-box" style="display:none"></div>
+      </div>
+      <div class="icon">[[File:Wikiversity-Mooc-Icon-Quiz.svg|32x32px|link=]]</div>
+      <h2>Quiz</h2>
+    </div>
+    <div class="content collapsible">
+{{:{{{quizUrl}}}}}
+    </div>
+  </div>
+
+  <div id="furtherReading" class="section">
+    <div class="header border-box">
+      <div class="actions">
+        <div class="btn-edit">[[File:Wikiversity-Mooc-Icon-Edit.svg|32x32px|link=Mooc-Module]]</div>
+        <div class="btn-ask-question">[[File:Wikiversity-Mooc-Icon-Ask.svg|32x32px|link=Mooc-Module]]</div>
+        <div id="modal-edit-furtherReading" class="modal-box" style="display:none"></div>
+      </div>
+      <div class="icon">[[File:Wikiversity-Mooc-Icon-Further-readings.svg|32x32px|link=]]</div>
+      <h2>Conteúdo adicional</h2>
+    </div>
+    <div class="content collapsible">
+{{{furtherReading}}}
+    </div>
+  </div>
+
+  <div id="discussion" class="section">
+    <div class="header border-box">
+      <div class="icon">[[File:Wikiversity-Mooc-Icon-Discussion.svg|32x32px|link=]]</div>
+      <h2>Discussão</h2>
+    </div>
+    <div class="content collapsible"></div>
+  </div>
+</div>
+<!-- MOOC CONTENT END -->
+</div>
+</div>
+
+<div id="navigation-wrapper">
+{{{navigation}}}
+</div>
+
+{{{localNavigation}}}
+
+</div>
+
+[[categoria:{{{baseUrl}}}]]
