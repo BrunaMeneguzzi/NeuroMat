@@ -10,7 +10,7 @@ function Template:loadPageContent(mooc, index, templateParams)
 	
 	self:loadSectionNavigation(item, templateParams);
 	
-	-- children
+	-- páginas dependentes
 	self:loadChildren(item, templateParams);
 end
 
@@ -34,7 +34,7 @@ function Template:loadChildren(item, templateParams)
 		end
 	end
 
-	-- button create child
+	-- botão para criar página dependente
 	container:node(self:renderCreateUnitLink());
 	container:node(self:renderCreateUnitBox());
 	
