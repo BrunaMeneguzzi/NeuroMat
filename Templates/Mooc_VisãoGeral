@@ -1,0 +1,28 @@
+__NOTOC__
+
+<div id="resource-loader" style="display:none">Utilizador:BMNeuroMat/mooc.css,Utilizador:BMNeuroMat/mooc.js</div>
+
+<h1>MOOC Module</h1>
+  This module allows you to add a MOOC and see all MOOCs available at Wikiversity.
+  Use the plus button below to add a MOOC. If you have questions concerning the usage please visit the [[Mooc-Module|MOOC module documentation]].
+
+<div id="mooc-content-wrapper">
+  <div id="mooc-content" class="border-box" style="margin-right:0">
+<!-- MOOC CONTENT START -->
+
+<div id="sections">
+  <div id="moocs" class="section">
+    <div class="header">
+      <div class="actions">
+<!-- TODO -->
+      </div>
+      <h2>MOOCs</h2>
+    </div>
+    <div class="content collapsible">
+{{{children}}}
+    </div>
+  </div>
+</div>
+<!-- MOOC CONTENT END -->
+</div>
+</div>
