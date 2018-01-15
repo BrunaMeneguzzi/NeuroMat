@@ -1,0 +1,252 @@
+local Item = require("Módulo:Mooc/Data/Item");
+
+local moocIndex = {}
+
+local function splitLines(stringValue)
+  local lines = {}
+  for s in stringValue:gmatch("[^\r?\n]+") do
+    table.insert(lines, s);
+  end
+  return lines;
+end
+
+local function splitPath(path)
+  local name;
+  local pathParts = {}
+  for s in path:gmatch("[^/]+") do
+    table.insert(pathParts, s);
+  end
+  
+  if #pathParts > 1 then
+    -- name is last path part
+    name = pathParts[#pathParts];
+  else
+    -- name is full path for root item
+    name = path;
+  end
+  
+  return name, pathParts;
+end
+
+local function getLevel(itemHeader)
+  local leading = string.len(string.match(itemHeader, "^=*"));
+  local trailing = string.len(string.match(itemHeader, "=*$"));
+  return math.min(leading, trailing);
+end
+
+local function isItem(header, itemName, itemType)
+  if header:getName() == itemName then
+    if itemType == nil or itemType:isType(header:getTypeIdentifier()) then
+      return true;
+    end
+  end
+  return false;
+end
+
+local function loadParam(textLines, iParamStart)
+  local line = textLines[iParamStart];  
+  if line ~= nil and string.sub(line, 1, 1) == "*" then
+    local iSeparator = string.find(line, "=", 2, true);
+    if iSeparator ~= nil then
+      local paramLines = nil;
+      local paramName = string.sub(line, 2, iSeparator - 1);
+      
+      local i = iParamStart;
+      local paramValue = string.sub(line, iSeparator + 1);
+      local numLines = #textLines;
+      repeat
+        if i > iParamStart then
+          if paramLines == nil then
+            paramLines = {}
+            if string.len(paramValue) > 0 then
+              table.insert(paramLines, paramValue);
+            end
+          end
+          table.insert(paramLines, line);
+        end
+        i = i + 1;
+        line = textLines[i];
+      until i > numLines or string.sub(line, 1, 1) == "*" or getLevel(line) > 0;
+      
+      if paramLines ~= nil then
+        paramValue = table.concat(paramLines, '\n');
+      end
+      
+      return {
+        name = paramName,
+        value = paramValue,
+        iEnd = i
+      }
+    end
+  else
+    return nil;
+  end
+end
+
+local function loadParams(textLines, iItemStart)
+  local params = {}
+  local iParamStart = iItemStart + 1;
+  local numLines = #textLines;
+  
+  local param;
+  repeat
+    param = loadParam(textLines, iParamStart);
+    if param ~= nil then
+      params[param.name] = param.value;
+      iParamStart = param.iEnd;
+    end
+  until param == nil or iParamStart > numLines;
+  
+  return params, iParamStart;
+end
+
+local function extractItem(textLines, iItemStart, parent, maxLevel, section)
+  local section = section + 1;
+  local header = Item.parseHeader(textLines[iItemStart], parent);
+  header:setSection(section);
+  local item = Item(header);
+  local params;
+  
+  local nextMaxLevel = 0;
+  if maxLevel > 0 then
+    nextMaxLevel = math.max(1, maxLevel - 1);
+  end
+  
+  -- load parameters
+  local i;
+  params, i = loadParams(textLines, iItemStart);
+  item:setParams(params);
+  
+  local itemLevel = item:getLevel();
+  local child;
+  local numLines = #textLines;
+  if maxLevel == 0 or maxLevel > 1 then
+    -- extract direct children
+    while i <= numLines do
+      local level = getLevel(textLines[i]);
+      if level > itemLevel then
+        -- add child
+        child, i, section = extractItem(textLines, i, item, nextMaxLevel, section);
+        item:addChild(child);
+      else
+        -- no child
+        break;
+      end
+    end
+  else
+    -- skip all children
+    while i <= numLines do
+      local level = getLevel(textLines[i]);
+      if level > 0 then
+        if level <= itemLevel then
+          break;
+        end
+      	section = section + 1;
+      end
+      i = i + 1;
+    end
+  end
+  
+  return item, i, section;
+end
+
+local function extractIndex(baseItem, searchPath, searchLevel)
+  local targetLevel = #searchPath;
+  local index = nil;
+  
+  if searchLevel == targetLevel then
+    -- current item is target item
+    local index = {}
+    index["item"] = baseItem;
+    return index;
+  end
+  
+  if baseItem:getChildren() ~= nil then
+    -- search at next level
+    local previous = nil;
+    for _,child in ipairs(baseItem:getChildren()) do
+      if isItem(child, searchPath[searchLevel + 1]) then
+        -- child is part of search path
+        index = extractIndex(child, searchPath, searchLevel + 1);
+      elseif searchLevel == targetLevel - 1 then
+        -- child may be next or previous item
+        if index == nil then
+          -- child may be previous item
+          previous = child;
+        else
+          -- child is next item
+          index["next"] = child;
+          break;
+        end
+      end
+    end
+    
+    if searchLevel == targetLevel - 1 and index ~= nil and searchLevel > 0 then
+      -- current item is parental item
+      index["parent"] = baseItem;
+      index["previous"] = previous;
+    end
+  end
+  
+  return index;
+end
+
+function moocIndex.parseIndexOverview(indexPlain, rootPath)
+	local textLines = splitLines(indexPlain);
+	local rootItem = Item(Item.Header("MOOC", 'mooc', nil, rootPath, 0));
+	rootItem:setParams({});
+		
+	-- extract all index item down to target level
+	local i = 1;
+	local section = 0;
+	local item;
+	local numLines = #textLines;
+	while i <= numLines do
+  		local level = getLevel(textLines[i]);
+		if level > 0 then
+			item, i, section = extractItem(textLines, i, rootItem, 2, section);
+			rootItem:addChild(item);
+		else
+			-- skip initial lines
+			i = i + 1;
+		end
+	end
+
+	local index = {}
+	index['item'] = rootItem;
+	
+	return index;
+end
+
+function moocIndex.parseIndex(indexPlain, itemPath, rootPath)
+  local textLines = splitLines(indexPlain);
+  local itemName, itemPath = splitPath(itemPath);
+  local targetLevel = #itemPath;
+  local rootItem = Item(Item.Header("MOOC", 'mooc', nil, rootPath, 0));
+  
+  -- extract all index item down to target level
+  local i = 1;
+  local section = 0;
+  local item;
+  local numLines = #textLines;
+  while i <= numLines do
+    local level = getLevel(textLines[i]);
+    if level > 0 then
+      item, i, section = extractItem(textLines, i, rootItem, targetLevel + 1, section);
+      rootItem:addChild(item);
+    else
+      -- skip initial lines
+      i = i + 1;
+    end
+  end
+  
+  -- find target item
+  local index = extractIndex(rootItem, itemPath, 0);
+  if index ~= nil then
+  	index["navigation"] = rootItem;
+  end
+
+  return index;
+end
+
+return moocIndex;
