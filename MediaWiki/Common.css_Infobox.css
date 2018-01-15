@@ -1,0 +1,16 @@
+/* CSS placed here will be applied to all skins */
+/* <source lang="css">/* */
+.infobox { border:1px solid #aaaaaa; background-color:#f9f9f9; margin:0.5em 0em 0.5em 1em; padding:0.2em; float:right; clear:right; }
+.infobox td, .infobox th { vertical-align:top; }
+.infobox caption { font-size:larger; margin-left:inherit; }
+.infobox.bordered { border-collapse:collapse; }
+.infobox.bordered td, .infobox.bordered th { border:1px solid #aaaaaa; }
+.infobox.bordered .borderless td, .infobox.bordered .borderless th { border:0px; }
+ 
+.infobox.sisterproject { width:20em; font-size:90%; }
+ 
+/* styles for bordered infobox with merged rows */
+.infobox.bordered .mergedtoprow td, .infobox.bordered .mergedtoprow th { border:0px; border-top:1px solid #aaaaaa; border-right:1px solid #aaaaaa; }
+.infobox.bordered .mergedrow td, .infobox.bordered .mergedrow th { border:0px; border-right:1px solid #aaaaaa; }
+
+/* </source> */
