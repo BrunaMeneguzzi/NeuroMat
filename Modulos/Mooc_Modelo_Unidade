@@ -1,0 +1,359 @@
+local inheritance = require("Módulo:Herança");
+local Template = inheritance.extend(inheritance.Class);
+
+Template.PATH = 'Mooc/Unidade';
+
+function Template:getMessage(key, params)
+	if key == 'discussion-statistic-num-threads' then
+		local numThreads = params[1];
+		if numThreads ~= 1 then
+			return 'questions';
+		end
+		return 'question';
+	end
+	return mw.message.new(key, params):plain();
+end
+
+function Template:render(frame, index, mooc)
+	local item = index['item'];
+	local templateParams = item:getParams();
+	self:loadPageContent(mooc, index, templateParams);
+	return frame:expandTemplate{ title = self.PATH, args = templateParams };
+end
+
+function Template:loadPageContent(mooc, index, templateParams)
+	local item = index['item'];
+	
+	-- administration
+	templateParams['section'] = item:getSection();
+	templateParams['baseUrl'] = mooc:getBaseUrl();
+	templateParams['path'] = item:getPath();
+	templateParams['indexUrl'] = mooc:getIndexUrl();
+	-- content
+	templateParams['title'] = item:getName();
+	if templateParams['learningGoals'] == nil then
+		templateParams['learningGoals'] = '<div class="empty-section">Nenhuma meta de aprendizagem definida.<br>' ..
+			'<div class="add-content-hint">Você pode <span class="edit-text">definir metas de aprendizagem</span> aqui.<br>' ..
+			'Você também pode usar o botão de edição no canto superior direito de uma seção para editar seu conteúdo.</div></div>';
+	end
+	if templateParams['video'] == nil then
+		templateParams['video'] = '<div class="empty-section">Nenhum vídeo definido.<br>' ..
+			'<div class="add-content-hint">Você pode <span class="edit-text">definir um vídeo</span> aqui.<br>' ..
+			'Você também pode usar o botão de edição no canto superior direito de uma seção para editar seu conteúdo.</div></div>';
+	elseif templateParams['video']:sub(1, 5) == 'File:' then
+		templateParams['video'] = '[[' .. templateParams['video'] .. '|800px]]';
+	end
+	if templateParams['furtherReading'] == nil then
+		templateParams['furtherReading'] = '<div class="empty-section">Nenhuma leitura adicional definida.<br>' ..
+			'<div class="add-content-hint">Você pode <span class="edit-text">definir leituras adicionais</span> aqui.<br>' ..
+			'Você também pode usar o botão de edição no canto superior direito de uma seção para editar seu conteúdo.</div></div>';
+	end
+	-- subpage URLs
+	self:loadUrls(item, templateParams);
+	-- section navigation
+	self:loadSectionNavigation(item, templateParams);
+	-- navigation
+	self:loadNavigation(index, templateParams);
+	self:loadLocalNavigation(index, templateParams);
+end
+
+function Template:loadUrls(item, templateParams)--TODO: remove function
+	local url = item:getUrl();
+	templateParams["learningGoalsUrl"] = url .. "/learningGoals";
+	templateParams["furtherReadingUrl"] = url .. "/furtherReading";
+	templateParams["scriptUrl"] = url .. "/script";
+	templateParams["quizUrl"] = url .. "/quiz";
+end
+
+local function isItemInTree(targetItem, crrItem)
+	if targetItem == crrItem then
+		return true;
+	end
+	local parent = targetItem:getParent();
+	if parent ~= nil then
+		return isItemInTree(parent, crrItem);
+	end
+	return false;
+end
+
+function Template:loadNavigation(index, templateParams)
+	local item = index["item"];
+	local root = index['navigation'];
+
+	local navContainer = mw.html.create('div');
+	navContainer:attr('id', 'navigation');
+	navContainer:addClass('border-box');
+	local nHeaderWrapper = navContainer:tag('div'):addClass('header-wrapper'):addClass('border-box');
+	local nHeader = nHeaderWrapper:tag('div'):addClass('header');
+	nHeader:wikitext('[[File:Wikiversity-Mooc-Icon-Navigation.svg|32x32px|link=]]');
+	nHeader:tag('div'):wikitext('Navegação');
+	local navItems = navContainer:tag('ol');
+	if (root:getChildren() ~= nil) then
+		for _,crrItem in ipairs(root:getChildren()) do
+			local itemLinkNode = self:renderItemLink(crrItem, 2, isItemInTree(item, crrItem));
+			navItems:node(itemLinkNode);
+		end
+	end
+	
+	templateParams['navigation'] = tostring(navContainer);
+end
+
+function Template:loadSectionNavigation(item, templateParams)
+	local url = item:getUrl();
+	local nNav = mw.html.create('div'):attr('id', 'item-navigation'):addClass('border-box');
+	nNav:node(self:renderSectionLink(url, 'video'));
+	nNav:node(self:renderSectionLink(url, 'script'));
+	nNav:node(self:renderSectionLink(url, 'quiz'));
+	nNav:node(self:renderSectionLink(url, 'furtherReading'));
+	nNav:node(self:renderSectionLink(url, 'discussion'));
+	templateParams['sectionNavigation'] = tostring(nNav);
+end
+
+function Template:getSectionIcon(sectionId)
+	local iconText = '[[File:';
+	if sectionId == 'learningGoals' then
+		iconText = iconText .. 'Wikiversity-Mooc-Icon-Learning-goals.svg';
+	elseif sectionId == 'video' then
+		iconText = iconText .. 'Wikiversity-Mooc-Icon-Video.svg';
+	elseif sectionId == 'script' then
+		iconText = iconText .. 'Wikiversity-Mooc-Icon-Script.svg';
+	elseif sectionId == 'quiz' then
+		iconText = iconText .. 'Wikiversity-Mooc-Icon-Quiz.svg';
+	elseif sectionId == 'units' then
+		iconText = iconText .. 'Wikiversity-Mooc-Icon-Associated-units.svg';
+	elseif sectionId == 'lessons' then
+		iconText = iconText .. 'Wikiversity-Mooc-Icon-Associated-units.svg';
+	elseif sectionId == 'furtherReading' then
+		iconText = iconText .. 'Wikiversity-Mooc-Icon-Further-readings.svg';
+	elseif sectionId == 'discussion' then
+		iconText = iconText .. 'Wikiversity-Mooc-Icon-Discussion.svg';
+	else
+		return nil;
+	end
+	return iconText .. '|23x23px|link=]]';
+end
+function Template:getSectionKey(sectionId)
+	return sectionId;
+end
+function Template:getSectionName(sectionId)
+	if sectionId == 'learningGoals' then
+		return 'Metas de Aprendizagem';
+	elseif sectionId == 'video' then
+		return 'Vídeo';
+	elseif sectionId == 'script' then
+		return 'Roteiro';
+	elseif sectionId == 'quiz' then
+		return 'Quiz';
+	elseif sectionId == 'units' then
+		return 'Unidades Associadas';
+	elseif sectionId == 'lessons' then
+		return 'Lições';
+	elseif sectionId == 'furtherReading' then
+		return 'Conteúdo Adicional';
+	elseif sectionId == 'discussion' then
+		return 'Discussão';
+	else
+		return sectionId;
+	end
+end
+
+function Template:renderSectionLink(url, sectionId)
+	local nSectionLinkWrapper = mw.html.create('div'):addClass('section-link-wrapper'):addClass('border-box'):attr('id', 'section-link-' .. self:getSectionKey(sectionId));
+	nSectionLinkWrapper:wikitext(self:getSectionIcon(sectionId));
+	nSectionLinkWrapper:wikitext('[[' .. url .. '#' .. self:getSectionKey(sectionId) .. '|' .. self:getSectionName(sectionId) .. ']]');
+	return nSectionLinkWrapper;
+end
+
+function Template:renderItemLink(item, depth, expand)
+	local params = item:getParams();
+	local node = mw.html.create('li');
+	node:addClass('title');
+
+	-- link title
+	local title = mw.html.create('span');
+	title:wikitext(item:getName());
+	if params['learningGoals'] ~= nil then
+		title:attr('title', params['learningGoals']);
+	else
+		title:attr('title', 'Nenhuma meta de aprendizado definida.');
+	end
+	
+	node:wikitext('[[' .. item:getUrl() .. '|' .. tostring(title) .. ']]');
+	
+	-- children
+	if depth > 1 and item:getChildren() ~= nil then
+		local navItems = node:tag('ol');
+		
+		for _,child in ipairs(item:getChildren()) do
+			local childLinkNode = self:renderItemLink(child, depth - 1);
+			navItems:node(childLinkNode);
+		end
+		
+		if expand == false then
+			navItems:css('display', 'none');
+		end
+	end
+	
+	return node;
+end
+
+function Template:renderChildUnit(unit)
+	local params = unit:getParams();
+	local url = unit:getUrl();
+	local nUnit = mw.html.create('div');
+	nUnit:addClass('unit');
+	
+	-- video bar
+	local video = params['video'];
+	local nVideoBar = nUnit:tag('div'):addClass('video-bar');
+	local nVideo = nVideoBar:tag('div'):addClass('video');
+	if video and string.sub(video, 1, 5) == 'File:' then
+		nVideo:wikitext('[[' .. thumb .. '|frameless|300x170px|link=' .. url .. ']]');
+	else
+		local text = '[[File:Wikiversity-logo-pt.svg|Wikiversity-logo-pt]]';
+		if video then
+			text = video;
+		end
+		nVideo:tag('div'):tag('span'):wikitext(text);
+	end
+	
+	-- unit content
+	local nContent = nUnit:tag('div'):addClass('content');
+	
+	-- icon bar
+	local nIconBar = nContent:tag('div'):addClass('icon-bar');
+	nIconBar:node(self:renderIconBar(unit));
+		
+	-- discussion stats
+	nContent:node(self:renderDiscussionStats(unit));
+	
+	-- unit title
+	nContent:tag('div'):addClass('title'):wikitext('[[' .. url .. '|' .. unit:getName() .. ']]');
+	--WTF we can not use h-tags, we COULD add by expanding a template
+		
+	-- learning goals
+	local learningGoals = params['learningGoals'];
+	local nLearningGoals = nContent:tag('div'):addClass('learning-goals');
+	if learningGoals ~= nil then
+		nLearningGoals:wikitext('\n' .. learningGoals);
+	else
+		nLearningGoals:wikitext('');
+	end
+		
+	return nUnit;
+end
+
+function Template:renderIconBar(unit)
+	local params = unit:getParams();
+	local url = unit:getUrl();
+	local nIcons = mw.html.create('ul');
+	local iconSize = '32x32px';
+	
+	-- video icon
+	local video = params['video'];
+	local nIconVideo = nIcons:tag('li');
+	nIconVideo:wikitext('[[File:Wikiversity-Mooc-Icon-Video.svg|' .. iconSize .. '|link=' .. url .. '#video|jump to video]]');
+	if video == nil then
+		nIconVideo:addClass('disabled');
+	end
+	
+	local nIconDownloadVideo = nIcons:tag('li');
+	if video ~= nil then
+		if string.sub(video, 1, 5) == 'File:' then
+			nIconDownloadVideo:wikitext('[[File:Wikiversity-Mooc-Icon-Download.svg|' .. iconSize .. '|link=' .. video .. '|download the video]]');
+		else
+			nIconDownloadVideo:addClass('disabled'):wikitext('[[File:Wikiversity-Mooc-Icon-Download.svg|' .. iconSize .. '|link=|can not download video]]');
+		end
+	else
+		nIconDownloadVideo:addClass('disabled'):wikitext('[[File:Wikiversity-Mooc-Icon-Download.svg|' .. iconSize .. '|link=|no video to download]]');
+	end
+	
+	-- script icon
+	local nIconScript = nIcons:tag('li');
+	nIconScript:wikitext('[[File:Wikiversity-Mooc-Icon-Script.svg|' .. iconSize .. '|link=' .. url .. '#script|jump to script]]');
+	
+	-- quiz icon
+	local nIconQuiz = nIcons:tag('li');
+	nIconQuiz:wikitext('[[File:Wikiversity-Mooc-Icon-Quiz.svg|' .. iconSize .. '|link=' .. url .. '#quiz|jump to quiz]]');
+	
+	return nIcons;
+end
+
+function Template:renderDiscussionStats(unit)
+	local params = unit:getParams();
+	local url = unit:getUrl();
+	local numThreads = tonumber(params['numThreads']);
+	if numThreads == nil then
+		numThreads = 0;
+	end
+	local numThreadsOpen = tonumber(params['numThreadsOpen']);
+	if numThreadsOpen == nil then
+		numThreadsOpen = 0;
+	end
+	
+	local nDisStatWrapper = mw.html.create('div'):addClass('discussion-statistic-wrapper'):css('display', 'none');
+	local nDiscussionStatistic = nDisStatWrapper:tag('div'):addClass('discussion-statistic');
+	local nIconDiscussion = nDiscussionStatistic:tag('div'):addClass('icon');
+	nIconDiscussion:wikitext('[[File:Wikiversity-Mooc-Icon-Discussion.svg|48x48px|link=' .. url .. '#discussion|jump to discussion]]');
+	
+	local nStatisticNumThreadsOpen = nDiscussionStatistic:tag('div'):addClass('stat-row');
+	nStatisticNumThreadsOpen:tag('div'):addClass('num'):wikitext(numThreadsOpen);
+	nStatisticNumThreadsOpen:tag('div'):addClass('title'):wikitext('open');
+	local nStatisticNumThreads = nDiscussionStatistic:tag('div'):addClass('stat-row');
+	nStatisticNumThreads:tag('div'):addClass('num'):wikitext(numThreads);
+	nStatisticNumThreads:tag('div'):addClass('title'):wikitext(self:getMessage('discussion-statistic-num-threads', { numThreads }));
+	if numThreadsOpen > 0 then
+		nIconDiscussion:addClass('hasNew');
+		nStatisticNumThreadsOpen:addClass('unanswered');
+	end
+	nDisStatWrapper:tag('span'):addClass('img-arrow'):wikitext('[[File:MoocDiscussionStatArrow.png|7x13px|link=|arrow]]');
+	
+	return nDisStatWrapper;
+end
+
+function Template:loadLocalNavigation(index, templateParams)
+	local previousItem = index['previous'];
+	local nextItem = index['next'];
+	
+	local navContainer = mw.html.create('div');
+	navContainer:attr('id', 'local-navigation');
+	if previousItem ~= nil then
+		local previousNode = self:renderUnitLink(previousItem);
+		previousNode:addClass('previous');
+		navContainer:node(previousNode);
+	end
+	if nextItem ~= nil then
+		local nextNode = self:renderUnitLink(nextItem);
+		nextNode:addClass('next');
+		navContainer:node(nextNode);
+	end
+	templateParams['localNavigation'] = tostring(navContainer);
+end
+
+function Template:renderUnitLink(unit)
+	local params = unit:getParams();
+	local node = mw.html.create('div');
+	local url = unit:getUrl();
+
+	-- video
+	local video = node:tag('div');
+	video:addClass('video');
+	if params["video"] then
+		if string.sub(params["video"], 1, 5) == 'File:' then
+			video:wikitext('[[' .. params['video'] .. '|frameless|300x170px|link=' .. url .. ']]');
+		else
+			video:tag('div'):tag('span'):wikitext(params["video"]);
+		end
+	else
+		video:tag('div'):tag('span'):wikitext("[[File:Wikiversity-logo-pt.svg|Wikiversity-logo-pt]]");
+	end
+
+	-- unit
+	local title = node:tag('div');
+	title:addClass('title');
+	title:wikitext('[[' .. url .. '|' .. unit:getName() .. ']]');
+
+	return node;
+end
+
+return Template;
