@@ -1,0 +1,273 @@
+/* Algumas classes cosméticas */
+.caixabonita {border: 1px solid #BECFE2; border-radius: 10px; padding: 0.5em; margin: 0.5em}
+.clear {clear:both}
+
+/* Cores */
+
+#bodyContent a.extiw[href*=".wikipedia.org/w"] {
+	color: green;
+}
+
+#bodyContent a.extiw[href*=".wikisource.org/w"] {
+	color: blue;
+}
+ 
+#bodyContent a[href $=".css"]{
+	border-bottom: #333 1px dotted;
+	background-color: #FFEFDE;
+}
+
+#bodyContent a[href $=".js"]{
+	border-bottom: #333 1px dotted;
+	background-color: #EDF7EE;
+}
+ 
+#bodyContent a.extiw[href*=".wiktionary.org/w"] {
+	border-bottom: 1px dotted #999;
+	color:#000000;
+}
+
+ /* Corrige o bug 2318, fazendo com que os redirecionamentos sejam 
+ marcados de modo diferente na página Especial:Allpages */
+ 
+ .allpagesredirect a,
+ .watchlistredir a {
+ font-style: italic;
+ margin-left: 1em;
+ color:green;
+ }
+
+ /* references 
+ make the list of references look smaller */
+ ol.references {
+   font-size: 100%;
+ }
+
+ .references-small { font-size: 90%;}
+
+ /* Realce a azul das referências ''clicadas'' para ajudar na navegação */
+
+ ol.references > li:target {
+   background-color: #DEF;
+ }
+
+/* On [[Special:RecentChanges]] and [[Special:Watchlist]] make the new pages symbol bold green and the minor edit symbol gray. */
+.newpage {
+    color:       green;
+}
+ 
+.minoredit,
+.minor {
+    color: gray;
+}
+
+/* Alternating background colours on Watchlist and RecentChanges */
+li.odd {
+         background-color: #FFF8E7
+}
+
+/* Add formatting to make sure that "external references" from [[Template:Ref]] do
+   not get URL expansion, not even when printed. The mechanism up to MediaWiki 1.4 was
+   that the HTML code contained a SPAN following the anchor A; this SPAN had the class
+   "urlexpansion", which was not displayed on screen, but was shown when the medium was
+   "print". The rules below ensure (a) that there is no extra padding to the right of
+   the anchor (displayed as "[<number>]"), (b) that there is no "external link arrow" for
+   the link, and (c) that this SPAN of class "urlexpansion" is never shown.
+*/
+.plainlinksneverexpand {
+   background: none !important;
+   padding: 0 !important;
+}
+ 
+.plainlinksneverexpand .urlexpansion {
+   display: none !important;
+}
+ 
+/* Make sure that ext links displayed within "plainlinksneverexpand" don't get
+   the arrow...
+*/
+.plainlinksneverexpand a {
+   background: none !important;
+   padding: 0 !important
+}
+ 
+/* With MediaWiki 1.5, the mechanism has changed: instead of a SPAN of class "urlexpansion"
+   following the anchor A, the anchor itself now has class "external autonumber" and the
+   expansion is inserted when printing (see the common printing style sheet at
+   http://en.wikipedia.org/w/skins/common/commonPrint.css) using the ":after" pseudo-
+   element of CSS.
+*/
+.plainlinksneverexpand a.external.text:after {
+   display: none !important;
+}
+.plainlinksneverexpand a.external.autonumber:after {
+   display: none !important;
+}
+ 
+/* Special:Search styles */
+.mw-search-results {
+   margin-left: 0;
+}
+.mw-search-results li {
+   margin: 0;
+   padding: 0.25em 1em;
+   border-bottom: 1px solid #d3daed;
+   background-color: #f6f8fc;
+   list-style-type: none;
+   list-style-image: none;
+}
+.mw-search-results table {
+   background-color: transparent;
+}
+.mw-search-result-data {
+   color: green;
+}
+/* Don't display some stuff on the main page */
+body.page-Página_principal #t-cite,
+body.page-Página_principal #lastmod, 
+body.page-Página_principal #siteSub, 
+body.page-Página_principal #contentSub, 
+body.page-Página_principal h1.firstHeading {
+display: none !important;}
+
+/*
+// Importando código para ativar a interface MOOC na Wikiversidade (2017-10-18)
+// Referência:
+// https://en.wikiversity.org/wiki/MediaWiki:Common.css
+*/
+
+@import url("/w/index.php?title=MediaWiki:Common.css/Collapse.css&action=raw&ctype=text/css") screen;
+@import url("/w/index.php?title=MediaWiki:Common.css/Navigation.css&action=raw&ctype=text/css") screen;
+@import url("/w/index.php?title=MediaWiki:Common.css/Colors.css&action=raw&ctype=text/css") screen;
+@import url("/w/index.php?title=MediaWiki:Common.css/Infobox.css&action=raw&ctype=text/css") screen;
+@import url("/w/index.php?title=MediaWiki:Common.css/Fonts.css&action=raw&ctype=text/css") screen;
+@import url("/w/index.php?title=MediaWiki:Common.css/MediaIcons.css&action=raw&ctype=text/css") screen;
+@import url("/w/index.php?title=MediaWiki:Common.css/Messages.css&action=raw&ctype=text/css") screen;
+@import url("/w/index.php?title=MediaWiki:Common.css/Slideshows.css&action=raw&ctype=text/css") screen;
+@import url("/w/index.php?title=MediaWiki:Common.css/addin-mooc.css&action=raw&ctype=text/css") screen;
+
+.same-bg { background: none }
+
+/* References */
+.references { font-size:90%; }
+.references li:target, .reference:target, .citation:target { background-color: #DDEEFF }
+.reference, .citation, cite { font-weight: normal; font-style: normal; word-wrap: break-word; }
+
+/* Category tree */
+#mw-subcategories ul { list-style: none none; margin-left: 0.25em; }
+.CategoryTreeChildren { margin-left: 1.25em; }
+
+/* prettytable class for skinning normal tables */
+table.prettytable { margin:1em 1em 1em 0em; background:#f9f9f9; border:1px #aaaaaa solid; border-collapse:collapse; }
+table.prettytable th, table.prettytable td { border:1px #aaaaaa solid; padding:0.2em; }
+table.prettytable th { background:#f2f2f2; text-align:center; }
+table.prettytable caption { margin-left:inherit; margin-right:inherit; }
+
+table.table { border-spacing:0em 0.5em; }
+table.table tr>td { padding:0.25em 1em; }
+table.table tr.even { background:#ddddff; }
+table.table tr.odd { background:#ccccff; }
+
+/* Style for "notices" */
+.notice { text-align: justify; margin:1em; padding:0.2em; }
+
+/* Choose whether to have AD/BC dates or CE/BCE dates */
+/* First, the default : display both : See templates ADCE and BCEBC for how these are used*/
+.Use_Default_Date_Convention { display: inline; }
+.Use_AD_and_BC  { display: none; } /* display:inline; in your skin for AD and BC. */
+.Use_BCE_and_CE { display: none; } /* display:inline; in your skin for CE and BCE. */
+
+/* Content in columns with CSS instead of tables [[Template:Columns]] */
+div.columns-2 div.column { float:left; width:50%; min-width:300px; }
+div.columns-3 div.column { float:left; width:33%; min-width:200px; }
+div.columns-4 div.column { float:left; width:25%; min-width:150px; }
+div.columns-5 div.column { float:left; width:20%; min-width:120px; }
+
+/* Put a checker background at the image description page only visible if the image has transparent background */
+#file img { background: url("//upload.wikimedia.org/wikipedia/commons/5/5d/Checker-16x16.png") repeat; }
+
+/* Show only when printing */
+@media screen, projection, handheld {
+  .printonly { display: none !important; }
+}
+
+/* "warning" messages. */
+div.mw-warning-with-logexcerpt, div.mw-lag-warn-high, div.mw-cascadeprotectedwarning, div#mw-protect-cascadeon {
+  clear:both; margin: 0.2em 0em; border:1px solid #bb7070; background:#ffdbdb; padding:0.25em 0.9em;
+}
+
+/* Pie chart test: Transparent borders */
+.transborder {
+    border: solid transparent;
+}
+* html .transborder {  /* IE6 */
+    border: solid #000001;
+    filter: chroma(color=#000001);
+}
+
+/* "system" messages. Used in [[MediaWiki:Noarticletext]] and [[MediaWiki:Readonly lag]]. */
+div.mw-lag-warn-normal, div.noarticletext, div.fmbox-system {
+  clear:both; margin:0.2em 0em; border:1px solid #aaaaaa; background:#f9f9f9; padding:0.25em 0.9em;
+}
+
+tt, code, pre, .mw-geshi { font-family: monospace, "DejaVu Sans Mono", "Courier New" !important; font-size:100%; }
+
+/* Documentation */
+.template-documentation { clear:both; margin:1em 0em 0em 0em; padding:1em 0em; }
+
+/**
+ * GLAM pages and templates stylesheets
+ * maintained by Jtneill on Wikiversity who copied it from Danny B on Outreach http://outreach.wikimedia.org/w/index.php?title=MediaWiki:Common.css&oldid=36984
+ */
+ 
+div.glamMain {
+  border: 1px solid #aaa;
+  padding: .2em .4em;
+}
+ 
+div.glamBody {
+  overflow: hidden;
+  width: auto;
+}
+ 
+div.glamContentPart {
+  float: left;
+  width: 68%;
+}
+ 
+div.glamSidebar {
+  float: right;
+  width: 28%;
+}
+ 
+div.glamTabs {
+  border-bottom: 1px solid #aaa;
+  margin-bottom: -1px;
+}
+ 
+table.glamTabbar {
+  border-collapse: collapse;
+  margin-bottom: -1px;
+}
+ 
+table.glamTabbar td {
+  border: 1px solid #aaa;
+  padding: .2em .4em;
+  text-align: center;
+  z-index: 1;
+}
+ 
+table.glamTabbar td.glamTabbarTab {
+  background-color: whiteSmoke;
+}
+ 
+table.glamTabbar td.glamTabbarTabActive {
+  background-color: #fff;
+  border-bottom: 1px solid #fff;
+}
+ 
+table.glamTabbar td.glamTabbarSpacer {
+  background-color: transparent;
+  border-top: none;
+  width: .5em;
+}
