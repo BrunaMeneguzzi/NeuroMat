@@ -1,0 +1,34 @@
+/* CSS placed here will be applied to all skins */
+/* <source lang="css">/* */
+/*
+ * Standard color definitions for borders and backgrounds
+ * These colors assume a dark font on a light background. For
+ * skins that are based on different contrast arrangements,
+ * these CSS classes should be overwritten with appropriate values.
+ */
+ 
+.bordercolor1 { border-color:#aaaaaa; border-width:1px; } /* like TOC */
+.bordercolor2 { border-color:#e9e9e9; border-width:1px; } /* barely noticeable, weak contrast */
+.bordercolor3 { border-color:#c00000; border-width:1px; } /* "Red", noticeable */
+.bordercolor4 { border-color:#8888aa; border-width:1px; } /* neutral color, noticeable */
+.bordercolor5 { border-color:#000000; border-width:1px; } /* "Black", strong contrast */
+ 
+.backgroundcolor1 { background-color:#f9f9f9; } /* like TOC */
+.backgroundcolor2 { background-color:#ffffff; } /* "White", for non-article pages, neutral */
+.backgroundcolor3 { background-color:#ffff40; } /* "Yellow", noticeable */
+.backgroundcolor4 { background-color:#ffaa00; } /* very noticeable */
+.backgroundcolor5 { background-color:#e0e0e0; } /* neutral, distinct */
+.backgroundcolor6 { background-color:#b3b7ff; } /* generally "colorful", for contrast and distinction */
+.backgroundcolor7 { background-color:#ffcbcb; } /* generally "colorful", for contrast and distinction */
+.backgroundcolor8 { background-color:#ffebad; } /* generally "colorful", for contrast and distinction */
+.backgroundcolor9 { background-color:#b9ffc5; } /* generally "colorful", for contrast and distinction */
+ 
+/* License tag designs */
+.license1 { clear:both; margin:0.5em auto; background-color:#F0FFF0; border:3px solid #E0EEE0; width:80%; }
+.license2 { clear:both; margin:0.5em auto; background-color:#B4EEB4; border:3px solid #9BCD9B; width:80%; }
+.license3 { clear:both; margin:0.5em auto; background-color:#FFDDDD; border:3px solid #DD0000; width:100%; }
+.license4 { clear:both; margin:0.5em auto; background-color:#f9f9f9; border:3px solid #e9e9e9; width:80%; }
+.license5 { clear:both; margin:0.5em auto; background-color:#EDF4FF; border:3px solid #A2B5CD; width:80%; }
+.license1 *, .license2 *, .license3 *, .license4 *, .license5 * { border: none; }
+
+/* </source> */
