@@ -1,0 +1,26 @@
+/* CSS placed here will be applied to all skins */
+/* <source lang="css">/* */
+/* Icons for medialist templates [[Template:Listen]], [[Template:Multi-listen_start]], [[Template:Video]], [[Template:Multi-video_start]] */
+.audiolink a {
+  background: url("//upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Loudspeaker.svg/11px-Loudspeaker.svg.png") center left no-repeat !important;
+  padding-left: 16px !important;
+  padding-right: 0 !important;
+}
+
+div.listenlist {
+    background: url("//upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Gnome-speakernotes.png/30px-Gnome-speakernotes.png");
+    padding-left: 40px;
+}
+
+div.videolist, div.multivideolist {
+    background: url("//upload.wikimedia.org/wikipedia/en/thumb/2/20/Tango-video-x-generic.png/40px-Tango-video-x-generic.png");
+    padding-left: 50px;
+}
+
+/* Style rules for media list templates */
+div.medialist { min-height:50px; margin:1em; background-position:top left; background-repeat:no-repeat; }
+div.medialist ul { list-style:none; margin:0em; }
+div.medialist ul li { padding-bottom:0.5em; }
+div.medialist ul li li { font-size: 91%; padding-bottom:0em; }
+
+/* </source> */
