@@ -1,0 +1,79 @@
+__NOTOC__
+<div id="addin-mooc">
+
+<div id="section" style="display:none">{{{section}}}</div>
+<div id="baseUrl" style="display:none">{{{baseUrl}}}</div>
+<div id="path" style="display:none">{{{path}}}</div>
+<div id="indexUrl" style="display:none">{{{indexUrl}}}</div>
+
+<div class="actions">
+*[[{{{indexUrl}}}|Editar o índice do MOOC]]
+</div>
+
+<h1>{{{title}}}</h1>
+
+<div id="content-wrapper">
+  <div id="mooc-content" class="border-box">
+<!-- MOOC CONTENT START -->
+{{{sectionNavigation}}}
+<div id="sections">
+  <div id="learningGoals" class="section">
+    <div class="header border-box">
+      <div class="actions">
+        <div class="btn-edit">[[File:Wikiversity-Mooc-Icon-Edit.svg|32x32px|link=Mooc-Module]]</div>
+        <div class="btn-ask-question">[[File:Wikiversity-Mooc-Icon-Ask.svg|32x32px|link=Mooc-Module]]</div>
+        <div id="modal-edit-learningGoals" class="modal-box" style="display:none"></div>
+      </div>
+      <div class="icon">[[File:Wikiversity-Mooc-Icon-Learning-goals.svg|32x32px|link=]]</div>
+      <h2>Metas de aprendizagem</h2>
+    </div>
+    <div class="content collapsible">
+{{{learningGoals}}}
+    </div>
+  </div>
+
+  <div id="units" class="section">
+    <div class="header border-box">
+      <div class="icon">[[File:Wikiversity-Mooc-Icon-Associated-units.svg|32x32px|link=]]</div>
+      <h2>Unidades associadas</h2>
+      <div class="actions"><!-- TODO --></div>
+    </div>
+    <div class="content collapsible">
+{{{children}}}
+    </div>
+  </div>
+
+  <div id="furtherReading" class="section">
+    <div class="header border-box">
+      <div class="actions">
+        <div class="btn-edit">[[File:Wikiversity-Mooc-Icon-Edit.svg|32x32px|link=Mooc-Module]]</div>
+        <div class="btn-ask-question">[[File:Wikiversity-Mooc-Icon-Ask.svg|32x32px|link=Mooc-Module]]</div>
+        <div id="modal-edit-furtherReading" class="modal-box" style="display:none"></div>
+      </div>
+      <div class="icon">[[File:Wikiversity-Mooc-Icon-Further-readings.svg|32x32px|link=]]</div>
+      <h2>Leitura adicional</h2>
+    </div>
+    <div class="content collapsible">
+{{{furtherReading}}}
+    </div>
+  </div>
+
+  <div id="discussion" class="section">
+    <div class="header border-box">
+      <div class="icon">[[File:Wikiversity-Mooc-Icon-Discussion.svg|32x32px|link=]]</div>
+      <h2>Discussão</h2>
+    </div>
+    <div class="content collapsible"></div>
+  </div>
+</div>
+<!-- MOOC CONTENT END -->
+</div>
+</div>
+
+<div id="navigation-wrapper">
+{{{navigation}}}
+</div>
+
+</div>
+
+[[categoria:{{{baseUrl}}}]]
