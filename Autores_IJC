@@ -1,0 +1,9 @@
+{{Header
+| imagem = 
+| tamanho = 1000px
+| título = <span style="font-size:1.1em;">Autores</span><br>
+| sobre_imagem = SOBRE A IMAGEM
+}}<noinclude>
+</noinclude>
+<br>
+<div style="text-indent:2.5em;display:block;">Autores.</div>
