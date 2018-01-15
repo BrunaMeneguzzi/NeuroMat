@@ -1,0 +1,119 @@
+require("Módulo:Exceção");
+local inheritance = require("Módulo:Herança");
+
+---
+
+local Header = inheritance.extend(inheritance.Class);
+
+function Header:init(name, typeIdentifier, parent, path, level)
+	self.name = name;
+	self.typeIdentifier = typeIdentifier;
+	self.parent = parent;
+	self.path = path;
+	self.level = level;
+end
+
+function Header:getName()
+	return self.name;
+end
+
+function Header:getTypeIdentifier()
+	return self.typeIdentifier;
+end
+
+function Header:getParent()
+	return self.parent;
+end
+
+function Header:getPath()
+	return self.path;
+end
+
+function Header:getUrl()
+	local relUrl = string.gsub(self.path, " ", "_");
+	return relUrl;
+end
+
+function Header:getLevel()
+	return self.level;
+end
+
+function Header:getSection()
+	return self.section;
+end
+
+function Header:setSection(newSection)
+	self.section = newSection;
+end
+
+---
+
+local Type = inheritance.extend(inheritance.Class);
+
+function Type:init(identifier)
+  self.identifier = identifier;
+end
+
+function Type:getIdentifier()
+  return self.identifier;
+end
+
+function Type:isType(typeIdentifier)
+  if self.identifier == typeIdentifier then
+    return true;
+  end
+  return false;
+end
+
+---
+
+local Item = inheritance.extend(Header);
+
+function Item:init(header)
+  Header.init(self, header:getName(), header:getTypeIdentifier(), header:getParent(), header:getPath(), header:getLevel());
+  self:setSection(header:getSection());
+end
+
+function Item:getParams()
+  return self.params;
+end
+
+function Item:setParams(params)
+  self.params = params;
+end
+
+function Item:getChildren()
+  return self.children;
+end
+
+function Item:addChild(child)
+  if self.children == nil then
+    self.children = {}
+  end
+  table.insert(self.children, child);
+end
+
+---
+
+function Item.parseHeader(headerLine, parent)
+  local iSplit = string.find(headerLine, "|", 1, true);
+  if not iSplit then
+    throw("failed to parse header: name separator is missing");
+  end
+  
+  local parentPath = parent:getPath();
+  local level = parent:getLevel() + 1;
+  local typeIdentifier = string.sub(headerLine, level + 1, iSplit - 1);
+  local name = string.sub(headerLine, iSplit + 1, -level - 1);
+  local itemPath = name;
+  if parentPath ~= "" then
+    itemPath = parentPath .. "/" .. name;
+  end
+  
+  return Header(name, typeIdentifier, parent, itemPath, level);
+end
+
+Item.Header = Header;
+Item.Type = Type;
+
+return Item;
