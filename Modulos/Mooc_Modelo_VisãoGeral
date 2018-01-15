@@ -11,14 +11,14 @@ function Template:loadPageContent(mooc, index, templateParams)
 	
 	self:loadSectionNavigation(item, templateParams);
 
-	-- administration
+	-- administração
 	templateParams['baseUrl'] = mooc:getBaseUrl();
 	templateParams['indexUrl'] = mooc:getIndexUrl();
-	-- content
+	-- conteúdo
 	templateParams['title'] = mooc:getBaseUrl();
-	-- children
+	-- páginas dependentes
 	self:loadChildren(item, templateParams);
-	-- navigation
+	-- navegação
 	self:loadNavigation(index, templateParams);
 end
 
@@ -42,7 +42,7 @@ function Template:loadChildren(item, templateParams)
 		end
 	end
 
-	-- button create child
+	-- botão para criar página dependente
 	container:node(self:renderCreateLessonLink());
 	container:node(self:renderCreateLessonBox());
 	
@@ -52,10 +52,10 @@ end
 function Template:renderChildLesson(lesson, numLesson)
 	local children = lesson:getChildren();
 	local container = mw.html.create('div'):addClass('lesson');
-	-- lesson title
+	-- título da lição
 	container:tag('div'):addClass('title'):wikitext('[[' .. lesson:getUrl() .. '|' .. tostring(numLesson) .. '. ' .. lesson:getName() .. ']]');
 	
-	-- associated units
+	-- unidades associadas
 	local nChildren = container:tag('div'):addClass('children');
 	if children ~= nil then
 		for _,v in ipairs(children) do
