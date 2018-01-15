@@ -24,12 +24,12 @@ end
 function Template:loadPageContent(mooc, index, templateParams)
 	local item = index['item'];
 	
-	-- administration
+	-- administração
 	templateParams['section'] = item:getSection();
 	templateParams['baseUrl'] = mooc:getBaseUrl();
 	templateParams['path'] = item:getPath();
 	templateParams['indexUrl'] = mooc:getIndexUrl();
-	-- content
+	-- conteúdo
 	templateParams['title'] = item:getName();
 	if templateParams['learningGoals'] == nil then
 		templateParams['learningGoals'] = '<div class="empty-section">Nenhuma meta de aprendizagem definida.<br>' ..
@@ -48,16 +48,16 @@ function Template:loadPageContent(mooc, index, templateParams)
 			'<div class="add-content-hint">Você pode <span class="edit-text">definir leituras adicionais</span> aqui.<br>' ..
 			'Você também pode usar o botão de edição no canto superior direito de uma seção para editar seu conteúdo.</div></div>';
 	end
-	-- subpage URLs
+	-- URLs de subpáginas
 	self:loadUrls(item, templateParams);
-	-- section navigation
+	-- navegação por seção
 	self:loadSectionNavigation(item, templateParams);
-	-- navigation
+	-- navegação
 	self:loadNavigation(index, templateParams);
 	self:loadLocalNavigation(index, templateParams);
 end
 
-function Template:loadUrls(item, templateParams)--TODO: remove function
+function Template:loadUrls(item, templateParams)
 	local url = item:getUrl();
 	templateParams["learningGoalsUrl"] = url .. "/learningGoals";
 	templateParams["furtherReadingUrl"] = url .. "/furtherReading";
@@ -169,7 +169,7 @@ function Template:renderItemLink(item, depth, expand)
 	local node = mw.html.create('li');
 	node:addClass('title');
 
-	-- link title
+	-- título do link
 	local title = mw.html.create('span');
 	title:wikitext(item:getName());
 	if params['learningGoals'] ~= nil then
@@ -180,7 +180,7 @@ function Template:renderItemLink(item, depth, expand)
 	
 	node:wikitext('[[' .. item:getUrl() .. '|' .. tostring(title) .. ']]');
 	
-	-- children
+	-- páginas dependentes
 	if depth > 1 and item:getChildren() ~= nil then
 		local navItems = node:tag('ol');
 		
@@ -203,7 +203,7 @@ function Template:renderChildUnit(unit)
 	local nUnit = mw.html.create('div');
 	nUnit:addClass('unit');
 	
-	-- video bar
+	-- barra de vídeo
 	local video = params['video'];
 	local nVideoBar = nUnit:tag('div'):addClass('video-bar');
 	local nVideo = nVideoBar:tag('div'):addClass('video');
@@ -217,21 +217,20 @@ function Template:renderChildUnit(unit)
 		nVideo:tag('div'):tag('span'):wikitext(text);
 	end
 	
-	-- unit content
+	-- conteúdo da unidade
 	local nContent = nUnit:tag('div'):addClass('content');
 	
-	-- icon bar
+	-- barra de ícones
 	local nIconBar = nContent:tag('div'):addClass('icon-bar');
 	nIconBar:node(self:renderIconBar(unit));
 		
-	-- discussion stats
+	-- estatísticas de discussão
 	nContent:node(self:renderDiscussionStats(unit));
 	
-	-- unit title
+	-- título da unidade
 	nContent:tag('div'):addClass('title'):wikitext('[[' .. url .. '|' .. unit:getName() .. ']]');
-	--WTF we can not use h-tags, we COULD add by expanding a template
 		
-	-- learning goals
+	-- metas de aprendizagem
 	local learningGoals = params['learningGoals'];
 	local nLearningGoals = nContent:tag('div'):addClass('learning-goals');
 	if learningGoals ~= nil then
@@ -249,7 +248,7 @@ function Template:renderIconBar(unit)
 	local nIcons = mw.html.create('ul');
 	local iconSize = '32x32px';
 	
-	-- video icon
+	-- ícone de vídeo
 	local video = params['video'];
 	local nIconVideo = nIcons:tag('li');
 	nIconVideo:wikitext('[[File:Wikiversity-Mooc-Icon-Video.svg|' .. iconSize .. '|link=' .. url .. '#video|jump to video]]');
@@ -268,11 +267,11 @@ function Template:renderIconBar(unit)
 		nIconDownloadVideo:addClass('disabled'):wikitext('[[File:Wikiversity-Mooc-Icon-Download.svg|' .. iconSize .. '|link=|no video to download]]');
 	end
 	
-	-- script icon
+	-- ícone de roteiro
 	local nIconScript = nIcons:tag('li');
 	nIconScript:wikitext('[[File:Wikiversity-Mooc-Icon-Script.svg|' .. iconSize .. '|link=' .. url .. '#script|jump to script]]');
 	
-	-- quiz icon
+	-- ícone de quiz
 	local nIconQuiz = nIcons:tag('li');
 	nIconQuiz:wikitext('[[File:Wikiversity-Mooc-Icon-Quiz.svg|' .. iconSize .. '|link=' .. url .. '#quiz|jump to quiz]]');
 	
@@ -335,7 +334,7 @@ function Template:renderUnitLink(unit)
 	local node = mw.html.create('div');
 	local url = unit:getUrl();
 
-	-- video
+	-- vídeo
 	local video = node:tag('div');
 	video:addClass('video');
 	if params["video"] then
@@ -348,7 +347,7 @@ function Template:renderUnitLink(unit)
 		video:tag('div'):tag('span'):wikitext("[[File:Wikiversity-logo-pt.svg|Wikiversity-logo-pt]]");
 	end
 
-	-- unit
+	-- unidade
 	local title = node:tag('div');
 	title:addClass('title');
 	title:wikitext('[[' .. url .. '|' .. unit:getName() .. ']]');
