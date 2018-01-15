@@ -1,0 +1,120 @@
+require("Módulo:Exceção");
+local inheritance = require("Módulo:Herança");
+local Item = require("Módulo:Mooc/Data/Item");
+local TypeHandler = require("Módulo:Mooc/ManipuladorTipos");
+local IndexParser = require("Módulo:Mooc/AnalisadorIndex");
+local Unit = require("Módulo:Mooc/Data/Unidade");
+local Lesson = require("Módulo:Mooc/Data/Lição");
+
+local Mooc = inheritance.extend(inheritance.Class);
+
+local handlers = {}
+local function getHandler(typeIdentifier)
+	for k,v in pairs(handlers) do
+		if v:handlesType(typeIdentifier) then
+  			return v;
+  		end
+	end
+	
+	local registered = {}
+    for k,v in pairs(handlers) do
+    	table.insert(registered, k);
+    end
+    throw('there is no type handler for item type "' .. typeIdentifier .. '" registered. Registered: ' .. table.concat(registered, ",") .. ".\n");
+end
+
+function Mooc:init(baseUrl)
+  if baseUrl then
+  	self.baseUrl = baseUrl;
+  end
+	
+  self.typeHandlers = {}
+
+  -- register basic item types
+  self:addTypeHandler(TypeHandler(Unit.TYPE, "Módulo:Mooc/Data/Unidade", "Módulo:Mooc/Modelo/Unidade"));
+  self:addTypeHandler(TypeHandler(Lesson.TYPE, "Módulo:Mooc/Data/Lição", "Módulo:Mooc/Modelo/Lição"));
+  	
+  self.typeHandlers.getHandler = function(typeIdentifier)
+    return getHandler(typeIdentifier);
+  end
+end
+
+function Mooc:addTypeHandler(typeHandler)
+  handlers[typeHandler:getType():getIdentifier()] = typeHandler;
+end
+
+function Mooc:getBaseUrl()
+  if not self.baseUrl then
+    local crrTitle = mw.title.getCurrentTitle();
+    --TODO substitute with interwiki, nsText and rootText for non-expensive solution
+    --expensive
+    local rootTitle = crrTitle.rootPageTitle;
+    self.baseUrl = rootTitle.fullText;
+  end
+  return self.baseUrl;
+end
+
+function Mooc:getIndexUrl()
+  return self:getBaseUrl() .. "/MoocIndex";
+end
+
+function Mooc:getCurrentPath()
+	local crrUrl = mw.title.getCurrentTitle().fullText;
+	local baseUrl = self:getBaseUrl();
+	
+	if string.sub(crrUrl:lower(), 1, string.len(baseUrl)) == baseUrl:lower() then
+		--TODO this disables to use "_" in item path
+		local crrPath = string.gsub(string.sub(crrUrl, string.len(baseUrl) + 2), "_", " ");
+		return crrPath;
+	end
+	return nil;
+end
+
+function Mooc:getIndex()
+  local indexUrl = self:getIndexUrl();
+  --expensive
+  local indexPage = mw.title.new(indexUrl);
+  local indexPlain = indexPage:getContent();
+  if indexPlain then
+    return indexPlain;
+  end
+  
+  throw('failed to read index from URL "' .. indexUrl .. '"');
+end
+
+function Mooc:renderOverview(frame)
+	local overviewTemplate = require("Módulo:Mooc/Modelo/VisãoGeral");
+	local index = IndexParser.parseIndexOverview(self:getIndex(), self:getBaseUrl());
+	return overviewTemplate:render(frame, index, self);
+end
+
+function Mooc:renderItem(frame, itemPath)
+	local itemPath = itemPath;
+	if itemPath == nil then
+		itemPath = self:getCurrentPath();
+		if itemPath == nil then
+			throw("failed to render item: the page is not a child of the base page");
+		end
+	end
+	local index = IndexParser.parseIndex(self:getIndex(), itemPath, self:getBaseUrl());
+	if not index then
+		throw('failed to render item @ "' .. itemPath .. '": item not found');
+	end
+	local typeHandler = self.typeHandlers.getHandler(index["item"]:getTypeIdentifier());
+	return typeHandler:getTemplate():render(frame, index, self);
+end
+
+function Mooc.overview(frame)
+	local baseUrl = frame.args['base'];
+	local mooc = Mooc(baseUrl);
+	return mooc:renderOverview(frame);
+end
+
+function Mooc.render(frame)
+	local baseUrl = frame.args['base'];
+	local itemPath = frame.args['path'];
+	local mooc = Mooc(baseUrl);
+	return mooc:renderItem(frame, itemPath);
+end
+
+return Mooc;
