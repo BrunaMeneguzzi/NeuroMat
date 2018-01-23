@@ -289,7 +289,7 @@ $(document).ready(function() {
    * deixa a navegação do item na borda superior da tela (#1)
    */
   if (nItemNav.length > 0) {
-    var itemNavTop = nItemNav.offset().top;//TODO ensure offset().top work correctly
+    var itemNavTop = nItemNav.offset().top;
     $(window).scroll(function() {
       var y = $(window).scrollTop();
       var isFixed = nItemNav.hasClass('fixed');
@@ -400,14 +400,14 @@ $(document).ready(function() {
       }
       if (section != null) {
         setSectionActive(section, true);
-      } else {//TODO replace with cross browser compatible solution (problems in e.g. Chrome 36.0.1985.125)
+      } else {
         //history.replaceState(null, null, window.location.pathname);
       }
     }
     function setSectionActive(section, isActive) {
       var sectionId = section.attr('id');
       var sectionAnchor = nItemNav.find('#section-link-' + sectionId);
-      if (isActive) {//TODO replace with cross browser compatible solution (problems in e.g. Chrome 36.0.1985.125)
+      if (isActive) {
         sectionAnchor.addClass('active');
         section.addClass('active');
         //history.replaceState({}, '', '#' + sectionId);
@@ -446,7 +446,7 @@ $(document).ready(function() {
       var y = $(window).scrollTop();
       var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
       var marginTop = 0;
-      if (nItemNav.hasClass('fixed')) {// correct scroll position
+      if (nItemNav.hasClass('fixed')) {// posição de rolagem correta
         marginTop = nItemNav.outerHeight() - 1;
         y += marginTop;
       }
@@ -459,16 +459,16 @@ $(document).ready(function() {
         var isActive = section.hasClass('active');
         var isFixed = sectionHeader.hasClass('fixed');
 
-        if (y >= sectionTop && y <= sectionTop + sectionHeight) {// active section
+        if (y >= sectionTop && y <= sectionTop + sectionHeight) {// seção ativa
           if (!isActive) {
             setActiveSection(section);
           }
           activeSection = section;
-          if (y <= sectionTop + sectionHeight - sectionHeader.outerHeight()) {// header can be fixed
+          if (y <= sectionTop + sectionHeight - sectionHeader.outerHeight()) {// cabeçalho pode ser fixado
             if (!isFixed) {
               fixHeader(sectionHeader, marginTop);
             }
-          } else {// header reached section bottom
+          } else {// cabeçalho no fundo da seção 
             if (!sectionHeader.hasClass('trailing')) {
               trailHeader(sectionHeader);
             }
@@ -579,7 +579,7 @@ function hashChanged(hash) {
 
 /**
  * Recarrega a página atual.
- * @param {String} (optional) page anchor to be set
+ * @param {String} (optional) página âncora a ser carregada
  */
 function reloadPage(anchor) {
   if (typeof anchor === 'undefined') {
@@ -592,8 +592,8 @@ function reloadPage(anchor) {
 /**
  * Mostra uma mensagem de notificação ao usuário.
  * Usa mw.Message para gerar mensagens.
- * @param {String} message key
- * @param {Array} message parameters
+ * @param {String} chave da mensagem
+ * @param {Array} parâmetros da mensagem
  */
 function notifyUser(msgKey, msgParams) {
 	var msgValue = mw.msg(msgKey, msgParams);
@@ -604,7 +604,7 @@ function notifyUser(msgKey, msgParams) {
 /**
  * Colapsa uma seção para uma altura fixa que pode ser configurada. A seção é então expansível novamente.
  * Aplica-se apenas a seções não colapsadas que são maiores do que a interface de usuário colapsada seria.
- * @param {jQuery} section node to be collapsed
+ * @param {jQuery} nó da seção a ser colapsada
  */
 function collapse(section) {
   var content = section.children('.content');
@@ -642,7 +642,7 @@ function collapse(section) {
 
 /**
  * Expande uma seção até sua altura completa, tornando-a novamente dobrável.
- * @param {jQuery} section node to be expanded
+ * @param {jQuery} nó da seção a ser expandido
  */
 function expand(section) {
   section.removeClass('collapsed');
@@ -665,8 +665,8 @@ function expand(section) {
 
 /**
  * Colapsa um segmento para combinar um número fixo de caracteres que podem ser configurados. A discussão é então expansível novamente.
- * @param {jQuery} thread node to be collapsed
- * @param {Object} thread displayed by the node
+ * @param {jQuery} nó do tópico a ser colapsado
+ * @param {Object} tópico mostrado pelo nó
  */
 function collapseThread(nThread, thread) {
   var content = nThread.children('.content');
@@ -696,7 +696,7 @@ function collapseThread(nThread, thread) {
   nThread.focusin(function() {
     expandThread(nThread, thread);
     return true;
-  });// expandable via focusing any child element (pode atacar elementos subjacentes)
+  });// expandível através do foco em uma subpágina (pode atacar elementos subjacentes)
   var btnHeight = btnReadMore.css('height');
   btnReadMore.css('height', '0');
   btnReadMore.stop().animate({
@@ -713,8 +713,8 @@ function collapseThread(nThread, thread) {
 
 /**
  * Expande um fio até sua altura completa tornando-o encapsulável novamente.
- * @param {jQuery} thread node to be expanded
- * @param {Object} thread displayed by the node
+ * @param {jQuery} nó do tópico a ser expandido
+ * @param {Object} tópico exibido pelo nó
  */
 function expandThread(nThread, thread) {
   nThread.removeClass('collapsed');
@@ -739,8 +739,8 @@ function expandThread(nThread, thread) {
 
 /**
  * Corrige uma exibição na borda superior da tela através do bloqueio de rolagem.
- * @param {jQuery} element to be fixed
- * @param {int} duration of the scroll lock
+ * @param {jQuery} elemento a ser fixado
+ * @param {int} duração do bloqueio de rolagem
  */
 function fixView(element, duration) {
   if (duration > 0) {
@@ -756,17 +756,17 @@ function fixView(element, duration) {
       element.css('top', null);
       element.css('z-index', zIndex);
       window.scroll(0, element.offset().top);
-      $(window).scroll();// fire jQuery event
+      $(window).scroll();
     }, duration);
   }
 }
 
 /**
- * Scrolls an element into the user's view.
- * The final scroll position can handle movement of the element, the animation can not.
- * @param {jQuery} element to scroll into view
- * @param {String} 'top'/'bottom' if the element should be aligned at the upper/lower screen border. Defaults to 'top'.
- * @param {int} (optional) duration of the scroll animation; defaults to 1000ms
+ * Desliza um elemento para a visualização do usuário.
+ * A posição final de rolagem pode lidar com o movimento do elemento, a animação não.
+ * @param {jQuery} elemento a ser deslizado para a visualização
+ * @param {String} 'top'/'bottom' se o elemento deve estar alinhado à borda superior/inferior. Padrão "topo"
+ * @param {int} (optional) duração da animaço de rolagem. Padrão 1000ms
  */
 function scrollIntoView(element, align, duration) {
   if (typeof duration === 'undefined') {
@@ -788,21 +788,21 @@ function scrollIntoView(element, align, duration) {
     var crrTop = element.offset().top;
     if (align === Alignment.BOTTOM) {
       crrTop += element.height() - h;
-      //TODO currently just if scrolled FAR enough
-      if (crrTop + h - y < h) {// element already in view
+
+      if (crrTop + h - y < h) {// elemento já em vista
         crrTop = y;
         fx.end = y;
         return true;
       }
     } else {
-      //TODO check if already in view
+      
     }
     if (nItemNav !== 'undefined' && nItemNav.hasClass('fixed')) {
-      crrTop -= nItemNav.height();//TODO remove if workaround found
+      crrTop -= nItemNav.height();
     }
     if (targetTop != crrTop) {
       targetTop = crrTop;
-      fx.end = targetTop;//TODO is there a way to do this smoothly?
+      fx.end = targetTop;
     }
     return false;
   };
@@ -817,17 +817,17 @@ function scrollIntoView(element, align, duration) {
 }
 
 /**
- * Prepares all modal boxes. Registers all box UI events.
+ * Prepara todas as caixas modais. Registra todos os eventos de caixa da interface do usuário.
  */
 function prepareModalBoxes() {
-  // fill modal boxes to save changes on item or its resources
+  // preenche caixas modais para salvar as alterações no item ou nos seus recursos
   prepareModalBox('learningGoals', 'edit', 5, saveChanges);
   prepareModalBox('video', 'edit', 1, saveChanges);
   prepareModalBox('script', 'edit', 5, saveChanges);
   prepareModalBox('quiz', 'edit', 5, saveChanges);
   prepareModalBox('furtherReading', 'edit', 5, saveChanges);
 
-  // fill modal boxes to add a MOOC item
+  // preenche caixas modais para adicionar um item MOOC
   prepareModalBox('addLesson', 'add-lesson', 1, function(idSection, value, summary) {
     addLesson(value, _index.item, summary, function() {
       reloadPage();
@@ -844,7 +844,7 @@ function prepareModalBoxes() {
     });
   }).find('.btn-save').prop('disabled', false);
 
-  // make boxes closable via button
+  // faz caixas modais fechavéis através de botão
   $('.modal-box').each(function() {
     var modal = $(this);
     modal.find('.btn-close').click(function() {
@@ -852,12 +852,12 @@ function prepareModalBoxes() {
       return false;
     });
   });
-  // make boxes closable via background click
+  // faz caixas modais fecháveis por meio de clique no plano de fundo
   $('.modal-box > .background').click(function(e) {
     closeModalBox($(e.target).parent());
     return false;
   });
-  // make boxes closable via ESC key
+  // faz caixas modais fecháveis pelo ESC
   $('.modal-box').on('keydown', function(e) { 
     if (e.which == 27) {
       closeModalBox($(this));
@@ -866,15 +866,15 @@ function prepareModalBoxes() {
 }
 
 /**
- * Creates a modal box.
- * @param {String} identifier of the parameter/resource the modal box will be responsible for
- * @param {String} intend identifier of the box (add/edit)
- * @param {int} number of lines needed for editing
- * @param {function} onSave callback
- * @return {jQuery} node of the modal box created
+ * Cria uma caixa modal.
+ * @param {String} identificador do parâmetro/recurso pelo qual a caixa modal é responsável
+ * @param {String} identificador da caixa (adicionar/editar)
+ * @param {int} número de linhas necessárias para editar
+ * @param {function} onSave retorno de chamada
+ * @return {jQuery} nó da caixa modal criada
  */
 function prepareModalBox(idSection, intentType, numLines, finishCallback) {
-  // create modal box structure
+  // cria a estrutura da caixa modal
   var modalBox = $('#modal-' + intentType + '-' + idSection);
   modalBox.append($('<div>', {
     'class': 'background'
@@ -888,7 +888,7 @@ function prepareModalBox(idSection, intentType, numLines, finishCallback) {
   var editFieldset = $('<fieldset>', {
     'class': 'edit-field'
   });
-  // label and textarea for value
+  // rótulo e texto para valor
   editFieldset.append($('<label>', {
     'for': 'edit-field-' + idSection,
     'class': 'label-title',
@@ -908,7 +908,7 @@ function prepareModalBox(idSection, intentType, numLines, finishCallback) {
     });
   }
   editFieldset.append(editField);
-  // label and input box for edit summary
+  // rótulo e label e caixa de entrada para sumário de edição
   editFieldset.append($('<label>', {
     'for': 'summary-' + idSection,
     'class': 'label-summary',
@@ -920,14 +920,14 @@ function prepareModalBox(idSection, intentType, numLines, finishCallback) {
     'type': 'text'
   });
   editFieldset.append(ibSummary);
-  // help text
+  // texto de ajuda
   var divHelpText = $('<div>', {
     'class': 'help'
   }).html(AddinMooc_CONFIG.message('UI_MODAL_HELP_' + idSection, _fullPath));
   editFieldset.append(divHelpText);
   boxContent.append(editFieldset);
-  //Q: why not put in edit fieldset?
-  // finish button
+
+  // boto de finalização
   var btnSave = $('<input>', {
     'class': 'btn-save',
     'disabled': true,
@@ -947,11 +947,11 @@ function prepareModalBox(idSection, intentType, numLines, finishCallback) {
 }
 
 /**
- * Fills all modal boxes.
- * @param {Object} MOOC item the boxes will enable to edit
+ * Preenche todas as caixas modais. 
+ * @param {Object} item MOOC que a caixa modal irá permitir editar 
  */
 function fillModalBoxes(item) {
-  // inject item data
+  // injeta dados do item
   $('#edit-field-learningGoals').append(item.getParameter(PARAMETER_KEY.LEARNING_GOALS));
   $('#modal-edit-learningGoals').find('.btn-save').prop('disabled', false);
   $('#edit-field-video').val(item.getParameter(PARAMETER_KEY.VIDEO));
@@ -961,13 +961,13 @@ function fillModalBoxes(item) {
   $('#modal-add-lesson-addLesson').find('.btn-save').prop('disabled', false);
   $('#modal-add-unit-addUnit').find('.btn-save').prop('disabled', false);
 
-  // retrieve and inject additional resources
+  // recupera e injeta recursos adicionais
   var taScript = $('#edit-field-script');
   item.retrieveScript(function(scriptText) {
     taScript.text(scriptText).html();
     $('#modal-edit-script').find('.btn-save').prop('disabled', false);
   }, function(jqXHR) {
-    if (jqXHR.status == 404) {// script missing
+    if (jqXHR.status == 404) {// roteiro faltando
       taScript.text(AddinMooc_CONFIG.message('DEFVAL_SCRIPT', item.header.type)).html();
     }
     $('#modal-edit-script').find('.btn-save').prop('disabled', false);
@@ -977,7 +977,7 @@ function fillModalBoxes(item) {
     taQuiz.text(quizText).html();
     $('#modal-edit-quiz').find('.btn-save').prop('disabled', false);
   }, function(jqXHR) {
-    if (jqXHR.status == 404) {// quiz missing
+    if (jqXHR.status == 404) {// quiz faltando
       taQuiz.text(AddinMooc_CONFIG.message('DEFVAL_QUIZ')).html();
       $('#modal-edit-quiz').find('.btn-save').prop('disabled', false);
     }
@@ -985,8 +985,8 @@ function fillModalBoxes(item) {
 }
 
 /**
- * Closes a modal box.
- * @param {jQuery} modal box to be closed
+ * Fecha uma caixa modal.
+ * @param {jQuery} caixa modal a ser fechada
  */
 function closeModalBox(modal) {
   nItemNav.css('z-index', 1001);
@@ -995,28 +995,28 @@ function closeModalBox(modal) {
 }
 
 /**
- * Saves changes to an item or one of its resources. Updates the MOOC index.
- * @param {String} identifier of the updated parameter/resource
- * @param {String} section value
- * @param {String} edit summary appendix
+ * Salva a alteraração em um item ou em um recurso desse item. Atualiza o index do MOOC.
+ * @param {String} identificador do parâmetro ou recurso
+ * @param {String} valor de seção
+ * @param {String} edita apêndice de resumo
  */
-function saveChanges(idSection, value, summary) {//Q: isn't idSection == key?
+function saveChanges(idSection, value, summary) {
   var sucCallback = function() {
     reloadPage('#' + idSection);
   };
-  if (idSection === 'script') {// update script resource
-    if (_index.item.script === null) {
-      // add category
-      value += '\n<noinclude>[[category:' + _index.base + '-MOOC]]</noinclude>';
-    }
+  if (idSection === 'script') {// atualiza o recurso do roteiro
+    //if (_index.item.script === null) {
+      // adiciona categoria
+      //value += '\n<noinclude>[[category:' + _index.base + '-MOOC]]</noinclude>';
+    //}
     updateScript(_index.item, value, summary, sucCallback);
-  } else if (idSection === 'quiz') {// update quiz resource
-    if (_index.item.quiz === null) {
+  } else if (idSection === 'quiz') {// atualiza o recurso de quiz
+    //if (_index.item.quiz === null) {
       // add category
-      value += '\n<noinclude>[[category:' + _index.base + '-MOOC]][[category:Quizzes]]</noinclude>';
-    }
+      //value += '\n<noinclude>[[category:' + _index.base + '-MOOC]][[category:Quizzes]]</noinclude>';
+    //}
     updateQuiz(_index.item, value, summary, sucCallback);
-  } else {// update index parameter
+  } else {// atualiza parâmetros de índice
     var key = null;
     if (idSection === 'learningGoals') {
       key = PARAMETER_KEY.LEARNING_GOALS;
@@ -1039,24 +1039,25 @@ function saveChanges(idSection, value, summary) {//Q: isn't idSection == key?
 }
 
 /**
- * Injects the interface to ask a question into a section.
- * @param {String} section identifier
- * @param {String} title of the talk page a question would be placed on
- * @param {boolean} inject a button only into section header if set to true
+ * Resolver isso
+ * Injeta a interface para fazer uma pergunta em uma seção.
+ * @param {String} identificador de seção
+ * @param {String} título da página de discussão onde uma questão será colocada
+ * @param {boolean} injeta um botão apensa no cabeçalho de uma seção se true
  */
 function insertAskQuestionUI(identifier, talkPageTitle, ownUi) {
   var nSection = $('#' + identifier);
   var nContent = nSection.children('.content');
   var btn = nSection.children('.header').find('.btn-ask-question');
-  if (ownUi) {// create UI
+  if (ownUi) {// cria interface de usuário
     var ui = createAskQuestionUI(identifier, talkPageTitle);
     nContent.append(ui);
     btn.click(function() {
-      // scroll to UI and focus title box
+      // desliza para a interface de usuário e foca no título da caixa
       scrollIntoView(ui, 'bottom');
       ui.children('.title').focus();
     });
-  } else {// scroll to discussion ui
+  } else {// desliza para a interface de usuário de discussão
     btn.click(function() {
       var nDiscussionUi = $('#discussion').find('.ask-question');
       scrollIntoView(nDiscussionUi, 'bottom');
@@ -1066,16 +1067,16 @@ function insertAskQuestionUI(identifier, talkPageTitle, ownUi) {
 }
 
 /**
- * Creates the interface to ask a question.
- * @param {String} identifier of the parameter/resource the interface belongs to
- * @param {String} title of the talk page a question would be placed on
- * @return {jQuery} node of the interface created
+ * Cria a interface para fazer uma pergunta.
+ * @param {String} identificador do parâmetro/recurso onde a interface pertence
+ * @param {String} título da página de discussão onde a questão será colocada
+ * @return {jQuery} nó da interface criada
  */
 function createAskQuestionUI(identifier, talkPageTitle) {
   var ui = $('<div>', {
     'class': 'ask-question'
   });
-  // question title
+  // título da questão
   var lbTitle = $('<label>', {
     'for': 'thread-title-' + identifier,
     'text': AddinMooc_CONFIG.message('UI_ASK_LABEL_TITLE')
@@ -1087,7 +1088,7 @@ function createAskQuestionUI(identifier, talkPageTitle) {
     'type': 'text'
   });
   ui.append(iTitle);
-  // question content
+  // conteúdo da questão
   var lbContent = $('<label>', {
     'for': 'thread-content-' + identifier,
     'text': AddinMooc_CONFIG.message('UI_ASK_LABEL_CONTENT')
@@ -1104,7 +1105,7 @@ function createAskQuestionUI(identifier, talkPageTitle) {
     var rows = this.value.split('\n').length;
     this.rows = rows < minRows ? minRows : rows;
   });
-  // ask button
+  // botão para fazer uma pergunta
   var btnAsk = $('<input>', {
     'class': 'btn-ask',
     'type': 'button',
@@ -1116,7 +1117,7 @@ function createAskQuestionUI(identifier, talkPageTitle) {
       return;
     }
     btnAsk.prop('disabled', true);
-    // add section to talk page
+    // adiciona uma seção à página de discussão
     var title = iTitle.val();
     if (title.length > 0) {
       var content = stripPost(teaContent.val());
@@ -1129,7 +1130,7 @@ function createAskQuestionUI(identifier, talkPageTitle) {
         });
       });
     } else {
-      notifyUser('q-no-title', null, {//TODO: display error on page and scroll in view
+      notifyUser('q-no-title', null, {
         'class': 'error'
       });
     }
@@ -1138,7 +1139,7 @@ function createAskQuestionUI(identifier, talkPageTitle) {
     ui.css('opacity', 1);
   };
   var greyOut = function() {
-    if (ui.children(':focus').length > 0) {// dont grey out if having focus
+    if (ui.children(':focus').length > 0) {// não cinza se estiver focado
       return;
     }
     ui.css('opacity', 0.6);
