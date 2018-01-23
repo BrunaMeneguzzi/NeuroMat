@@ -1153,15 +1153,15 @@ function createAskQuestionUI(identifier, talkPageTitle) {
 }
 
 /**
- * Creates the interface to reply to a post.
- * @param {Object} postData object including root thread and post to reply to
- * @return {jQuery} node of the interface created
+ * Cria a interface para responder um post. 
+ * @param {Object} objeto postData incluindo tópico raiz e post para responder a ele
+ * @return {jQuery} nó da interface criada
  */
 function createReplyUI(postData) {
   var ui = $('<div>', {
     'class': 'ui-reply'
   });
-  // reply content
+  // conteúdo de resposta
   var lbContent = $('<label>', {
     'for': 'reply-content-' + postData.post.id,
     'text': AddinMooc_CONFIG.message('UI_REPLY_LABEL_CONTENT')
@@ -1178,7 +1178,7 @@ function createReplyUI(postData) {
     var rows = this.value.split('\n').length;
     this.rows = rows < minRows ? minRows : rows;
   });
-  // reply button
+  // botão para responder
   var btnReply = $('<input>', {
     'class': 'btn-reply',
     'type': 'button',
@@ -1195,7 +1195,7 @@ function createReplyUI(postData) {
       var thread = postData.thread;
       var reply = Post(0, post.level + 1, [ content ], [], createPseudoSignature('--~~~~'));
       post.replies.push(reply);
-      // save thread to its talk page
+      // salva tópico na página de discussão dele
       _index.retrieveItem(function(item) {
         item.discussion = discussion;
         saveThread(item, thread, function() {
@@ -1209,30 +1209,30 @@ function createReplyUI(postData) {
 }
 
 /**
- * Renders a post into a node.
- * @param {Object} post instance to render
- * @return {jQuery} node representing the given post
+ * Renderiza um post em um nó.
+ * @param {Object} instância post instance a ser renderizada
+ * @return {jQuery} nó representando o post dado
  */
 function renderPost(post) {
-  // main node
+  // nó principal
   var nPost = $('<li>', {
     'class': 'post',
     'id': 'post-' + post.id
   });
-  // content
+  // conteúdo
   var nContent = $('<div>', {
     'class': 'content'
   });
-  // post message
+  // mensagem do post
   var nMessage = $('<div>', {
     'class': 'message'
   });
-  // message text
+  // texto da mensagem
   var nMessageText = $('<div>', {
   'class': 'text'
   }).html(post.htmlContent);
   nMessage.append(nMessageText);
-  // meta information
+  // meta informação
   var sSignature = '';
   if (post.signature !== null) {
     sSignature = post.signature.tostring();
@@ -1243,7 +1243,7 @@ function renderPost(post) {
   });
   nMeta.toggle(false);
   nMessage.append(nMeta);
-  // reply overlay
+  // sobreposição de respostas
   var nOverlay = renderPostOverlay();
   nMessage.prepend(nOverlay);
   nMessage.mouseenter(function() {
@@ -1255,15 +1255,15 @@ function renderPost(post) {
     nMeta.stop(true).fadeOut();
   });
   nContent.append(nMessage);
-  // replies
+  // respostas
   nContent.append(renderReplies(post));
   nPost.append(nContent);
   return nPost;
 }
 
 /**
- * Creates the overlay to show a reply interface.
- * @return {jQuery} node of the overlay created
+ * Cria a sobreposição para mostrar a interface de resposta.
+ * @return {jQuery} nó da sobreposição criada
  */
 function renderPostOverlay() {
   var nOverlay = $('<div>', {
@@ -1280,7 +1280,7 @@ function renderPostOverlay() {
     'text': AddinMooc_CONFIG.message('UI_REPLY_BTN_REPLY')
   });
   var ui = null;
-  btnReply.click(function() {// inject reply UI to reply to post
+  btnReply.click(function() {// injeta interface para responder um post
     var visible = false;
     if (ui === null) {
       var nPost = nOverlay.parent().parent().parent();
@@ -1293,9 +1293,9 @@ function renderPostOverlay() {
       ui.toggle('fast');
     }
     if (!visible) {
-      // hide all other reply UI
+      // esconte todas as outras interfaces para fazer uma pergunta
       $('.ui-reply').not(ui).toggle(false);
-      // scroll to UI
+      // desliza para a interface de usuário
       scrollIntoView(ui, 'bottom');
       ui.children('textarea').focus();
     }
@@ -1307,9 +1307,9 @@ function renderPostOverlay() {
 }
 
 /**
- * Renders the replies of a post.
- * @param {Object} post with replies to render
- * @return {jQuery} node with all rendered reply posts
+ * Renderiza as respostas de um post. 
+ * @param {Object} post com respostas a ser renderizado
+ * @return {jQuery} nó com todos os posts de resposta renderizados
  */
 function renderReplies(post) {
   var nReplies = $('<ol>', {
@@ -1322,9 +1322,9 @@ function renderReplies(post) {
 }
 
 /**
- * Render a reply post into a node.
- * @param {Object} post instance to render
- * @return {jQuery} node representing the given reply post
+ * Renderiza um post de resposta em um nó.
+ * @param {Object} instância post a ser renderizado
+ * @return {jQuery} nó representando o post de resposta dado
  */
 function renderReply(reply) {
   var nReply = renderPost(reply);
@@ -1333,17 +1333,17 @@ function renderReply(reply) {
 }
 
 /**
- * Renders a thread into a node.
- * @param {Object} thread instance to render
- * @return {jQuery} node representing the given thread
+ * Renderiza um tópico em um nó.
+ * @param {Object} instância de tópico a ser renderizado
+ * @return {jQuery} nó representando o tópico dado
  */
 function renderThread(thread) {
   var nThread = renderPost(thread);
   nThread.addClass('thread');
-  // add thread header containing title and statistics
+  // adiciona cabeçalho do tópico contendo título e estatísticas
   var nHeader = renderThreadHeader(thread);
   nThread.prepend(nHeader);
-  // make thread collapsible
+  // torna o tópico desmontável
   nThread.children('.content').addClass('collapsible');
   nHeader.click(function() {
     if (nThread.hasClass('collapsed')) {
@@ -1353,7 +1353,7 @@ function renderThread(thread) {
     }
   return false;
   });
-  // show warning if unsigned
+  // mostra atenção se não estiver assinado
   if (thread.signature === null) {
     nThread.find('.meta').addClass('warning').text('No one signed this thread.');
   }
@@ -1361,17 +1361,17 @@ function renderThread(thread) {
 }
 
 /**
- * Creates the header of a certain thread.
- * @param {Object} thread instance to create the header for
- * @return {jQuery} header node created
+ * Cria o cabeçalho de um certo tópico.
+ * @param {Object} instância de tópico para criar um cabeçalho para ele 
+ * @return {jQuery} nó de cabeçalho criado
  */
 function renderThreadHeader(thread) {
-  // thread title
+  // título do tópico
   var nHeader = $('<h2>', {
     'class': 'header title',
     'text': thread.title
   });
-  // number of replies
+  // número de respostas
   var nNumReplies = $('<div>', {
     'class': 'num-replies',
     'text': AddinMooc_CONFIG.message('UI_THREAD_LABEL_HEADER', thread.getNumPosts() - 1)
@@ -1382,9 +1382,9 @@ function renderThreadHeader(thread) {
 
 /*####################
   # MEDIAWIKI API WRAPPERS
-  # the functions have different intends and
-  # 1.) abstract from API calls
-  # 2.) chain multiple, successive calls
+  # as funções têm diferentes funções e
+  # 1.) resumo de chamadas de API
+  # 2.) múltiplas chamadas sucessivas
   ####################*/
 
 /**
