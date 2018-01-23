@@ -2084,11 +2084,11 @@ function loadProperty(indexLines, iLine) {
 
 /**
  * Cria uma instância de discussão contendo dados extraídos de várias páginas de discussão.
- * @return {Object} discussion instance d with
- * * {int} d.lastId: highest post identifier used
+ * @return {Object} intância de discussão d com
+ * * {int} d.lastId: identificador de post usado mais alto 
  * * d.lost
- * * {Array<Object>} d.talkPages: talk page instances
- * * {Array<Object>} d.threads: threads loaded from the talk pages
+ * * {Array<Object>} d.talkPages: instâncias da página de discussão
+ * * {Array<Object>} d.threads: tópicos carregados da página de discussão
  * * {int} d.getNumPosts()
  * * {int} d.getNumOpenThreads()
  * * {String} d.tostring()
@@ -2130,12 +2130,12 @@ function Discussion() {
 
 /**
  * Cria uma instância de post contendo dados extraídos da página de discussão.
- * @param {int} unique post identifier
- * @param {int} post level
- * @param {Array<String>} post content lines
- * @param {Array<Object>} posts that are in reply to this post
- * @param {Object} signature object
- * @return {Object} post instance p with
+ * @param {int} identificador de post único
+ * @param {int} nível do post
+ * @param {Array<String>} linhas de conteúdo do post
+ * @param {Array<Object>} posts que respondem a essa postagem
+ * @param {Object} objeto de assinatura
+ * @return {Object} instância de post p com
  * * {int} p.id
  * * {String} p.content
  * * {String} p.htmlContent
@@ -2161,7 +2161,7 @@ function Post(id, level, content, replies, signature) {
       return num;
     },
     'isValid': function() {
-      // post malformed: signature missing
+      // post malformado: falta assinatura
       return (this.signature !== null);
     },
     'tostring': function() {
@@ -2181,10 +2181,10 @@ function Post(id, level, content, replies, signature) {
 
 /**
  * Cria uma instância de página de discussão.
- * @param {String} title of the talk page
- * @return {Object} talk page instance t with
- * * {Array<Object>} t.threads: threads on the talk page
- * * {String} t.title: talk page title
+ * @param {String} título da página de discussão
+ * @return {Object} instância da página de discussão t com
+ * * {Array<Object>} t.threads: tópicos na página de discussão
+ * * {String} t.title: título da página de discussão
  */
 function TalkPage(title) {
   return {
@@ -2195,9 +2195,9 @@ function TalkPage(title) {
 
 /**
  * Cria uma instância de tópico que contém dados extraídos da página de discussão.
- * @param {String} thread title (gets stripped from leading/trailing whitespace)
- * @param {int} section of the thread within the talk page
- * @return {Object} thread instance t being a post instance with
+ * @param {String} título do tópico (com espaço em branco principal/à direita)
+ * @param {int} seção do tópico dentro da página de discussão
+ * @return {Object} instância de tópico t sendo uma instância de post com 
  * * {Array<String>} t.content
  * * {Array<String>} t.lost
  * * {int} t.published
@@ -2396,10 +2396,10 @@ function loadPost(lines, iStart, lastId) {
 
 /**
  * Carrega um objeto de assinatura de uma assinatura wikitext.
- * @param {String} line ending with a wikitext signature
- * @return {Object} o with
- * * {String} o.content: text in line before signature
- * * {Object} o.value: signature object
+ * @param {String} linha terminada com uma assinatura wikitext
+ * @return {Object} o com
+ * * {String} o.content: texto na linha antes da assinatura
+ * * {Object} o.value: objeto de assinatura 
  */
 function loadSignature(line) {
   var pos = line.indexOf('--[[');
@@ -2470,11 +2470,11 @@ function loadSignature(line) {
 
 /**
  * Carrega um tópico. Separa o conteúdo do tópico das respostas.
- * @param {Object} thread instance t with all text belonging to the thread in t.content
- * @param {int} highest used post identifier
- * @return {Object} o with
- * * {int} o.lastId: highest used post identifier
- * * {Object} o.value: thread instance loaded
+ * @param {Object} instância de tópico t com todos os textos pertencentes ao tópico no t.content
+ * @param {int} identificador de post usado mais alto
+ * @return {Object} o com
+ * * {int} o.lastId: identificador de post usado mais alto
+ * * {Object} o.value: instância de tópico carregada
  */
 function loadThread(thread, lastId) {
   var lines = thread.content;
@@ -2529,12 +2529,12 @@ function loadThread(thread, lastId) {
 
 /**
  * Carrega todas os tópicos de uma página de discussão.
- * @param {Array<String>} talk page content
- * @param {int} highest used post identifier
- * @return {Object} o with
- * * {int} o.lastId: highest used post identifier
+ * @param {Array<String>} conteúdo da página de discussão
+ * @param {int} identificador de post usado mais alto
+ * @return {Object} o com
+ * * {int} o.lastId: identificador de post usado mais alto
  * * {Array<String>} o.lost
- * * {Array<Object>} o.threads: threads the talk page contained
+ * * {Array<Object>} o.threads: tópicos contidos na página de discussão
  */
 function loadThreads(lines, lastId) {
   var rawThreads = splitThreads(lines);
@@ -2554,10 +2554,10 @@ function loadThreads(lines, lastId) {
 
 /**
  * Carrega os tópicos de um número de páginas de discussão em uma instância de discussão.
- * @param {Array<String>} titles of the talk pages to load
- * @param {int} index within passed titles of the talk page to load
- * @param {Object} discussion instance to push the threads to
- * @param {function} finish callback
+ * @param {Array<String>} títulos das páginas de discussão a serem carregadas
+ * @param {int} índice dentro dos títulos passados da página de conversação para carregar
+ * @param {Object} instância de discussão para empurrar os tópicos
+ * @param {function} termina o retorno de chamada
  */
 function mergeThreads(talkPageTitles, iCrrPage, discussion, callback) {
   if (iCrrPage < talkPageTitles.length) {
@@ -2585,7 +2585,7 @@ function mergeThreads(talkPageTitles, iCrrPage, discussion, callback) {
 
 /**
  * Carrega tópicos de páginas de discussão, injeta-as na seção de discussão e permite a discussão global na página.
- * @param {Array<String>} titles of the talk pages to load from
+ * @param {Array<String>} títulos da página de discussão a serem carregadas
  */
 function renderThreads(talkPageTitles) {
   mergeThreads(talkPageTitles, 0, discussion, function() {
@@ -2671,10 +2671,10 @@ function renderThreads(talkPageTitles) {
 
 /**
  * Divide uma página de discussão em tópicos únicos.
- * @param {Array<String>} talk page content
- * @return {Object} o with
- * * {Array<Object>} o.threads: thread objects
- * * {int} o.lost: index of last line in root section (thus not belonging to any threads)
+ * @param {Array<String>} conteúdo da página de discussão
+ * @return {Object} o com
+ * * {Array<Object>} o.threads: objetos de tópicos
+ * * {int} o.lost: índice da última linha na sessão raiz (que não pertença a nenhum tópico)
  */
 function splitThreads(lines) {
   var threads = [];
@@ -2714,42 +2714,42 @@ function splitThreads(lines) {
 }
 
 /*####################
-  # UTILITIES
-  # low-level helper functions
+  # UTILIDADES
+  # funções auxiliares de baixo nível
   ####################*/
  
 /**
- * Repeats a string value a given number of times.
- * @param {String} value to repeat
- * @param {int} number of times to repeat the value
- * @return {String} value repeated the given number of times.
+ * Repete o valor de uma string um dado número de vezes.
+ * @param {String} valor a repetir
+ * @param {int} número de vezes a repetir o valor
+ * @return {String} valor repetido o dado número de vezes
  */
 function strrep(value, numRepeat) {
 	return new Array(numRepeat + 1).join(value);
 }
 
 /**
- * Splits a text into its single lines.
- * @param {String} multiline text
- * @return {Array} single text lines
+ * Corta um texto em suas linhas individuais.
+ * @param {String} texto multilinha
+ * @return {Array} linhas de texto único
  */
 function splitLines(text) {
   return text.split(/\r?\n/);
 }
 
 /**
- * Parses a Date object to a String.
- * @param {Date} Date to be parsed
- * @return {String} String representing the date passed (YYYY/MM/dd HH:mm)
+ * Analisa um objeto data em uma string
+ * @param {Date} data a ser analisada
+ * @return {String} string representando a data passada (YYYY/MM/dd HH:mm)
  */
 function dateToString(date) {
   return (date.getYear() + 1900) + "/" + date.getMonth() + "/" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes();
 }
 
 /**
- * Calculates the header level of a wikitext line.
- * @param {String} wikitext line
- * @return {int} header level of the line passed, 0 if the line is no header
+ * Calcula o nível do cabeçalho de uma linha wikitext.
+ * @param {String} linha wikitext
+ * @return {int} nível do cabeçalho da linha passada, 0 se a linha não tem cabeçalho
  */
 function getLevel(line) {
   var sLevelStart = line.match('^=*');
@@ -2763,10 +2763,10 @@ function getLevel(line) {
 }
 
 /**
- * Converts month name to index.
- * @param {String} month name
- * @return {int} month index starting with 1; -1 if month name unknown
- * @see http://stackoverflow.com/questions/13566552/easiest-way-to-convert-month-name-to-month-number-in-js-jan-01
+ * Converte o nome do mês ao index.
+ * @param {String} nome do mês
+ * @return {int} índice do mês começando com 1; -1 se o nome do mês é desconhecido
+ * @veja http://stackoverflow.com/questions/13566552/easiest-way-to-convert-month-name-to-month-number-in-js-jan-01
  */
 function getMonthFromString(mon){
   // en: "August"
@@ -2780,22 +2780,22 @@ function getMonthFromString(mon){
 }
 
 /**
- * Calculates the post level of a talk page line.
- * @param {String} talk page line
- * @return {int} post level of the line passed (0: no post, n: reply level n)
+ * Calcula o nível de publicação de uma linha de página de discussão.
+ * @param {String} linha da página de conversação
+ * @return {int} nível de postagem da linha passada
  */
 function getPostLevel(line) {
   var level = line.match('^:*');
-  if (level.length > 0 && level[0]) {// post reply
+  if (level.length > 0 && level[0]) {
     return level[0].length;
   }
   return 0;
 }
 
 /**
- * Calculates the length of the signature in a post.
- * @param {String} post content
- * @return {int} length of the signature; 0 if post is unsigned
+ * Calcula o comprimento da assinatura em um post.
+ * @param {String} conteúdo do post
+ * @return {int} comprimento da assinatura; 0 se o post não foi assinado
  */
 function getSignatureLength(content) {
   if (content.match(/\~\~\~\~$/) !== null) {
@@ -2808,9 +2808,9 @@ function getSignatureLength(content) {
 }
 
 /**
- * Returns the talk page title of a wiki page.
- * @param {String} title of the wiki page
- * @return {String} title of the talk page of the wiki page specified
+ * Retorna o título da página de conversação de uma página wiki.
+ * @param {String} título da página wiki
+ * @return {String} título da página de conversação da página wiki especificada
  */
 function getTalkPageTitle(pageTitle) {
   var iNamespace = pageTitle.indexOf(':');
@@ -2824,25 +2824,23 @@ function getTalkPageTitle(pageTitle) {
 }
 
 /**
- * Strips a post text from any unwanted characters.
- * 1.) manual intendation
- * 2.) additional thread titles
- * 3.) manual signature
- * 4.) leading/trailing whitespace
- * @param {String} post content
- * @return {String} stripped post content
+ * Retira um texto de mensagem de qualquer caractere indesejado.
+ * 1.) indentação manual
+ * 2.) títulos de threads adicionais
+ * 3.) assinatura manual
+ * 4.) espaço em branco adicional ou à direita
+ * @param {String} conteúdo do post
+ * @return {String} conteúdo do post retirado
  */
 function stripPost(content) {
   var lines = splitLines(content);
   var line, postLevel, level;
   for (var i = 0; i < lines.length; ++i) {
     line = lines[i];
-    // strip leading ':'
     postLevel = getPostLevel(line);
     if (postLevel > 0) {
       line = line.substring(postLevel);
     }
-    // remove thread starts
     level = getLevel(line);
     if (level > 0) {
       line = line.substring(level, line.length - level);
@@ -2850,19 +2848,19 @@ function stripPost(content) {
     lines[i] = line;
   }
   var post = lines.join('\n');
-  // remove signature added manually
+  // remove assinatura adicionada manualmente
   var signatureLength = getSignatureLength(post);
   if (signatureLength > 0) {
     post = post.substring(0, post.length - signatureLength);
   }
-  // remove leading/trailing whitespace
+  // remove espaço em branco adicional ou à direita
   return $.trim(post);
 }
 
 /**
- * Parses a wiki timestamp to a Date object.
- * @param {String} timestamp in wiki format
- * @return {Date} Date object representing the given timestamp; null if parsing failed
+ * Analisa um wiki timestamp para um objeto data.
+ * @param {String} timestamp no formato wiki
+ * @return {Date} objeto data representando o timestamp determinado; nulo se a análise falhar
  */
 function parseTimestamp(value) {
   var time = value.substring(0, 5);
@@ -2871,8 +2869,6 @@ function parseTimestamp(value) {
   var dayParts = day.split(' ');
   var date = new Date();
   var month = getMonthFromString(dayParts[1]);
-  // en: "13:05, 28 August 2014 (UTC)"
-  // de: "10:20, 12. Nov. 2014 (CET)"
   if (month != -1) {
     day = dayParts[0].replace('.', '');
     date.setUTCDate(day);
