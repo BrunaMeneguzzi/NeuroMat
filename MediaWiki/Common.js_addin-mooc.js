@@ -2078,12 +2078,12 @@ function loadProperty(indexLines, iLine) {
 }
 
 /*####################
-  # DISCUSSION UTILITIES
-  # helper functions to work with discussion objects
+  # UTILIDADES DE DISCUSSÃO
+  # funções auxiliares para trabalhar com objetos de discussão
   ####################*/
 
 /**
- * Creates a discussion instance holding data extracted from a number of talk pages.
+ * Cria uma instância de discussão contendo dados extraídos de várias páginas de discussão.
  * @return {Object} discussion instance d with
  * * {int} d.lastId: highest post identifier used
  * * d.lost
@@ -2129,7 +2129,7 @@ function Discussion() {
 }
 
 /**
- * Creates a post instance holding data extracted from the talk page.
+ * Cria uma instância de post contendo dados extraídos da página de discussão.
  * @param {int} unique post identifier
  * @param {int} post level
  * @param {Array<String>} post content lines
@@ -2180,7 +2180,7 @@ function Post(id, level, content, replies, signature) {
 }
 
 /**
- * Creates a talk page instance.
+ * Cria uma instância de página de discussão.
  * @param {String} title of the talk page
  * @return {Object} talk page instance t with
  * * {Array<Object>} t.threads: threads on the talk page
@@ -2194,7 +2194,7 @@ function TalkPage(title) {
 }
 
 /**
- * Creates a thread instance holding data extracted from the talk page.
+ * Cria uma instância de tópico que contém dados extraídos da página de discussão.
  * @param {String} thread title (gets stripped from leading/trailing whitespace)
  * @param {int} section of the thread within the talk page
  * @return {Object} thread instance t being a post instance with
@@ -2227,7 +2227,7 @@ function Thread(title, section) {
 }
 
 /**
- * Creates an empty signature object.
+ * Cria um objeto de assinatura vazio.
  * @param {String} value the object's "towikitext" function returns
  * @return {Object} empty signature object returning the given value in it's "towikitext" function
  */
@@ -2240,7 +2240,7 @@ function createPseudoSignature(value) {
 }
 
 /**
- * Cuts thread content to a certain length as a preview.
+ * Corta o conteúdo do tópico em um certo comprimento como uma pré-visualização.
  * @param {Object} thread with content to be cut
  * @param {int} maximum number of characters for the preview
  * @return {String} thread content with maximum length passed plus '...'
@@ -2267,7 +2267,7 @@ function cutThreadContent(thread, maxLength) {
 }
 
 /**
- * Searches a post for a certain post identifier. Includes post specified and all its replies.
+ * Procura uma postagem para um determinado identificador de postagem. Inclui publicação especificada e todas as suas respostas.
  * @param {Object} post instance to search in
  * @param {int} searched post identifier
  * @return {Object} o with
@@ -2291,7 +2291,7 @@ function findPostInPost(post, postId) {
 }
 
 /**
- * Searches all threads for a certain post identifier.
+ * Pesquisa todos os tópicos para um determinado identificador de postagem.
  * @param {int} searched post identifier
  * @return {Object} o with
  * * {Object} o.post: post instance with searched identifier
@@ -2310,7 +2310,7 @@ function findPostInThread(postId) {
 }
 
 /**
- * Retrieves the instance of a certain talk page. Creates a new instance if not existing.
+ * Recupera a instância de uma determinada página de discussão. Cria uma nova instância se não existir.
  * @param {String} title of the talk page
  * @return {Object} talk page instance
  */
@@ -2320,12 +2320,12 @@ function getTalkPage(talkPageTitle) {
       return discussion.talkPages[i];
     }
   }
-  // return empty talk page object
+  // retorna objeto de página de discussão vazia
   return TalkPage(talkPageTitle);
 }
 
 /**
- * Loads a post from a talk page.
+ * Carrega um post de uma página de discussão.
  * @param {Array<String>} text lines containing the post
  * @param {int} index of the line the post starts at
  * @param {int} highest used post identifier
@@ -2365,22 +2365,22 @@ function loadPost(lines, iStart, lastId) {
         lastId = reply.lastId;
       }
     }
-    if (nextLevel == level) {// post at same level: signature determines
-      if (signature !== null) {// new post at same level
+    if (nextLevel == level) {// post no mesmo nível
+      if (signature !== null) {// novo post no mesmo nível
         break;
-      } else {// still current post: add and search for signature
+      } else {// post atual: adiciona e procura por assinatura
         line = line.substring(level);
         signature = loadSignature(line);
-        if (signature === null) {// signature not found: add content
+        if (signature === null) {// assinatura não encontrada: adiciona conteúdo
           content.push(line);
         }
         i += 1;
       }
-    } else if (nextLevel === 0 && line.length === 0) {// ignore blank line
+    } else if (nextLevel === 0 && line.length === 0) {// ignora linha vazia
       i += 1;
     }
   }
-  if (signature !== null) {// signature found: add signature line content if any
+  if (signature !== null) {// assinatura encontrada: adiciona conteúdo de linha de assinatura, se houver
     if (signature.content !== null) {
       content.push(signature.content);
     }
@@ -2395,7 +2395,7 @@ function loadPost(lines, iStart, lastId) {
 }
 
 /**
- * Loads a signature object from a wikitext signature.
+ * Carrega um objeto de assinatura de uma assinatura wikitext.
  * @param {String} line ending with a wikitext signature
  * @return {Object} o with
  * * {String} o.content: text in line before signature
@@ -2448,7 +2448,7 @@ function loadSignature(line) {
         var timestamp = parseTimestamp(sTimestamp);
         console.log('timestamp: ' + timestamp);
         
-        return {//TODO: create and use constructor
+        return {
           'content': content,
           'value': {
             'author': username,
@@ -2464,12 +2464,12 @@ function loadSignature(line) {
       }
     }
   }
-  // unsigned or malformed signature
+  // sem assinatura ou assinatura mal formada
   return null;
 }
 
 /**
- * Loads a thread. Separates thread content from replies.
+ * Carrega um tópico. Separa o conteúdo do tópico das respostas.
  * @param {Object} thread instance t with all text belonging to the thread in t.content
  * @param {int} highest used post identifier
  * @return {Object} o with
@@ -2490,25 +2490,25 @@ function loadThread(thread, lastId) {
       lastId = post.lastId;
       if (post.post.isValid()) {
         thread.replies.push(post.post);
-      } else {//copy invalid posts to thread's lost section
+      } else {//copia as postagens inválidas na seção perdida da thread
         thread.lost.push(post.post.content);
         AddinMooc_CONFIG.log(0, 'LOG_DIS_POST_INVALID', post.post.id, post.post.content);
       }
-    } else {// thread content
-      if (signature === null) {// no signature found yet
+    } else {// conteúdo do tópico
+      if (signature === null) {// nenhuma assinatura encontrada
         signature = loadSignature(lines[i]);
-        if (signature === null) {// no signature found: add content
+        if (signature === null) {// nenhuma assinatura encontrada: adiciona conteúdo
           content.push(lines[i]);
-        } else if (signature.content !== null) {// signature found: add signature line content if any
+        } else if (signature.content !== null) {// assinatura encontrada: adiciona conteúdo de linha de assinatura, se existir
           content.push(signature.content);
         }
-      } else {// signature already found: malformed?
+      } else {// assinatura encontrada e mal formada
         content.push(lines[i]);
       }
       i += 1;
     }
   }
-  // remove trailing newlines
+  // remove linhas novas
   if (content[0] == '') {
     content.shift();
   }
@@ -2528,7 +2528,7 @@ function loadThread(thread, lastId) {
 }
 
 /**
- * Loads all threads of a talk page.
+ * Carrega todas os tópicos de uma página de discussão.
  * @param {Array<String>} talk page content
  * @param {int} highest used post identifier
  * @return {Object} o with
@@ -2539,7 +2539,7 @@ function loadThread(thread, lastId) {
 function loadThreads(lines, lastId) {
   var rawThreads = splitThreads(lines);
   var threads = [];
-  // load threads with their replies
+  // carrega threads com suas respostas
   for (var i = 0; i < rawThreads.threads.length; ++i) {
     var thread = loadThread(rawThreads.threads[i], lastId);
     lastId = thread.lastId;
@@ -2553,7 +2553,7 @@ function loadThreads(lines, lastId) {
 }
 
 /**
- * Loads the threads of a number of talk pages into a discussion instance.
+ * Carrega os tópicos de um número de páginas de discussão em uma instância de discussão.
  * @param {Array<String>} titles of the talk pages to load
  * @param {int} index within passed titles of the talk page to load
  * @param {Object} discussion instance to push the threads to
@@ -2575,7 +2575,7 @@ function mergeThreads(talkPageTitles, iCrrPage, discussion, callback) {
       }
       discussion.lastId = parsed.lastId;
       mergeThreads(talkPageTitles, iCrrPage + 1, discussion, callback);
-    }, function() {// failed to retrieve talk page, assume it just does not exist and go on
+    }, function() {// ao falhar em recuperar uma página de discussão, assume que não existe e continua
       mergeThreads(talkPageTitles, iCrrPage + 1, discussion, callback);
     });
   } else {
@@ -2584,7 +2584,7 @@ function mergeThreads(talkPageTitles, iCrrPage, discussion, callback) {
 }
 
 /**
- * Loads threads from talk pages, injects them into discussion section and enables global on-page discussion.
+ * Carrega tópicos de páginas de discussão, injeta-as na seção de discussão e permite a discussão global na página.
  * @param {Array<String>} titles of the talk pages to load from
  */
 function renderThreads(talkPageTitles) {
@@ -2599,7 +2599,7 @@ function renderThreads(talkPageTitles) {
     
     var threads = discussion.threads;
     AddinMooc_CONFIG.log(0, 'LOG_DIS_NUMTHREADS', threads.length, talkPageTitles);
-    threads.sort(function(t1, t2) {// sort threads by timestamp of publication (DESC)
+    threads.sort(function(t1, t2) {// ordena os tópicos por tempo de publicação (DESC)
       if (t1.published > t2.published) {
         return -1;
       } else if (t1.published < t2.published) {
@@ -2614,20 +2614,18 @@ function renderThreads(talkPageTitles) {
       for (var j = 0; j < threads.length; ++j) {
         var nThread = renderThread(threads[j]);
         divDiscussion.append(nThread);
-        if (threads.length > 2) {// collapse threads if too many
+        if (threads.length > 2) {// une tópicos, se forem muitos
           collapseThread(nThread, threads[j]);
         }
         
-        if (!threads[j].isValid()) {// thread invalid: unsigned
-          // TODO show warning(s) below threads
+        if (!threads[j].isValid()) {// conteúdo inválido: não assinado
         }
-        if (threads[j].lost.length > 0) {// contains invalid posts: unsigned
-          // TODO show warning(s) below threads
+        if (threads[j].lost.length > 0) {// contém post inválidos: não assinados
         }
       }
     };
     
-    // parse thread content and inject threads
+    // analisa conteúdo de tópicos e injeta tópicos
     var getContentNodes = function(post) {
       var nodes = [];
       nodes.push($('<div>', {'id':post.id}).html(post.content));
@@ -2665,14 +2663,14 @@ function renderThreads(talkPageTitles) {
         iCrr = adoptContentNodes(threads[i], nodes, iCrr);
       }
       injectThreads();
-    }, function() {// inject unparsed threads if parsing failed
+    }, function() {// injeta tópicos não analisados se a análise falhar
       injectThreads();
     });
   });
 }
 
 /**
- * Splits a talk page into its single threads.
+ * Divide uma página de discussão em tópicos únicos.
  * @param {Array<String>} talk page content
  * @return {Object} o with
  * * {Array<Object>} o.threads: thread objects
@@ -2686,26 +2684,26 @@ function splitThreads(lines) {
     line = lines[i];
     level = getLevel(line);
     if (level > 0) {
-      if (level == 2) {// new thread
-        if (thread !== null) {// store current
+      if (level == 2) {// novo tópico
+        if (thread !== null) {// conteúdo armazenado 
           threads.push(thread);
         }
         thread = Thread(line.substring(level, line.length - level), ++section);
         AddinMooc_CONFIG.log(0, 'LOG_DIS_THREAD_SECTION', line, section);
       } else {
-        // malformed: header at invalid level
+        // má-formação: cabeçalho em um nível inválido
         section += 1;
         thread.content.push(line);
       }
-    } else {// thread content
+    } else {// conteúdo do tópico
       if (thread !== null) {
         thread.content.push(line);
-      } else {// content not belonging to any threads
+      } else {// conteúdo não pertence a nenhum tópico
         iLost = i;
       }
     }
   }
-  if (thread !== null) {// store thread finished by EOF
+  if (thread !== null) {
     threads.push(thread);
   }
   
