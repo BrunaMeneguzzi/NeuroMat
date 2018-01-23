@@ -2055,8 +2055,8 @@ function loadProperty(indexLines, iLine) {
     var i = iLine;
     var value = line.substring(iSeparator + 1);
     do {
-      if (i > iLine) {// multiline value
-        if (paramLines.length === 0 && value.length > 0) {// push first line value if any
+      if (i > iLine) {// valor multilinha
+        if (paramLines.length === 0 && value.length > 0) {// empurra valor da primeira linha se existir
           paramLines.push(value);
         }
         paramLines.push(line);
@@ -2229,8 +2229,8 @@ function Thread(title, section) {
 
 /**
  * Cria um objeto de assinatura vazio.
- * @param {String} value the object's "towikitext" function returns
- * @return {Object} empty signature object returning the given value in it's "towikitext" function
+ * @param {String} valor do "towikitext" do objeto retornado pela função
+ * @return {Object} objeto assinatura vazio retornando o valor dado na função "towikitext"
  */
 function createPseudoSignature(value) {
   return {
@@ -2242,9 +2242,9 @@ function createPseudoSignature(value) {
 
 /**
  * Corta o conteúdo do tópico em um certo comprimento como uma pré-visualização.
- * @param {Object} thread with content to be cut
- * @param {int} maximum number of characters for the preview
- * @return {String} thread content with maximum length passed plus '...'
+ * @param {Object} tópico com conteúdo a ser cortado
+ * @param {int} número máximo de caracteres para a pré-visualização
+ * @return {String} conteúdo de tópico com comprimento máximo após '...'
  */
 function cutThreadContent(thread, maxLength) {
   var div = document.createElement('div');
@@ -2269,11 +2269,11 @@ function cutThreadContent(thread, maxLength) {
 
 /**
  * Procura uma postagem para um determinado identificador de postagem. Inclui publicação especificada e todas as suas respostas.
- * @param {Object} post instance to search in
- * @param {int} searched post identifier
- * @return {Object} o with
- * * {Object} o.post: post instance with searched identifier
- * or null if not found in post specified
+ * @param {Object} instância do post onde procurar
+ * @param {int} identificador do post pesquisado
+ * @return {Object} o com
+ * * {Object} o.post: instância de post instance com identificador pesquisado
+ * ou nulo se não encontrado um post específico
  */
 function findPostInPost(post, postId) {
   if (post.id == postId) {
@@ -2293,11 +2293,11 @@ function findPostInPost(post, postId) {
 
 /**
  * Pesquisa todos os tópicos para um determinado identificador de postagem.
- * @param {int} searched post identifier
- * @return {Object} o with
- * * {Object} o.post: post instance with searched identifier
- * * {Object} o.thread: thread instance the post belongs to
- * or null if not found
+ * @param {int} identificador de post pesquisado
+ * @return {Object} o com
+ * * {Object} o.post: instância de post com identificador pesquisado
+ * * {Object} o.thread: instância de tópico ao qual o post pertence
+ * ou nulo se não encontrado
  */
 function findPostInThread(postId) {
   for (var i = 0; i < discussion.threads.length; ++i) {
@@ -2312,8 +2312,8 @@ function findPostInThread(postId) {
 
 /**
  * Recupera a instância de uma determinada página de discussão. Cria uma nova instância se não existir.
- * @param {String} title of the talk page
- * @return {Object} talk page instance
+ * @param {String} título da página de discussão
+ * @return {Object} instância de página de discussão
  */
 function getTalkPage(talkPageTitle) {
   for (var i = 0; i < discussion.talkPages.length; ++i) {
@@ -2327,13 +2327,13 @@ function getTalkPage(talkPageTitle) {
 
 /**
  * Carrega um post de uma página de discussão.
- * @param {Array<String>} text lines containing the post
- * @param {int} index of the line the post starts at
- * @param {int} highest used post identifier
- * @return {Object} o with
- * * {Object} o.post: post instance
- * * {int} o.iEnd: index of the line the post ends at
- * * {int} o.iLastId: highest used post identifier
+ * @param {Array<String>} linha de texto contendo o post
+ * @param {int} índice da linha em que o post começa
+ * @param {int} identificador de post usado mais alto
+ * @return {Object} o com
+ * * {Object} o.post: instância de post
+ * * {int} o.iEnd: índice da linha em que o post termina
+ * * {int} o.iLastId: identificador de post usado mais alto
  */
 function loadPost(lines, iStart, lastId) {
   // get level
@@ -2355,7 +2355,7 @@ function loadPost(lines, iStart, lastId) {
     line = lines[i];
     nextLevel = getPostLevel(line);
     if (nextLevel > 0 || line.length > 0) {
-      if (nextLevel < level) {// new post at higher level
+      if (nextLevel < level) {// novo post em um nível maior
         break;
       } else if (nextLevel > level) {// reply
         var reply = loadPost(lines, i, lastId);
