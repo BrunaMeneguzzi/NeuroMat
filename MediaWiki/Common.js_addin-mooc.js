@@ -1388,14 +1388,14 @@ function renderThreadHeader(thread) {
   ####################*/
 
 /**
- * Request a wiki page's plain wikitext content.
- * Uses 'action=raw' to get the page content.
- * @param {String} title of the wiki page
- * @param {int} section within the wiki page; pass 0 to retrieve whole page
- * @param {function} success callback (String pageContent)
- * @param {function} (optional) failure callback (Object jqXHR: HTTP request object)
+ * Solicite o conteúdo simples do wikitext da página wiki.
+ * Usa 'action=raw' para conseguir o contéudo da página.
+ * @param {String} Título da página wiki
+ * @param {int} seção dentro da página wiki; passe 0 para recuperar a página inteira
+ * @param {function} retorno de mensagem sucessidido (String pageContent)
+ * @param {function} (opcional) retorno de mensagem de falha (Object jqXHR: HTTP request object)
  */
-function doPageContentRequest(pageTitle, section, sucCallback, errorCallback) {/* Q: feature supported by mw.Api? */
+function doPageContentRequest(pageTitle, section, sucCallback, errorCallback) {
   var url = AddinMooc_CONFIG.get("MW_ROOT_URL") + "?action=raw&title=" + pageTitle;
   if (section !== null) {
     url += "&section=" + section;
@@ -1412,13 +1412,13 @@ function doPageContentRequest(pageTitle, section, sucCallback, errorCallback) {/
 }
 
 /**
- * Retrieves edit tokens for any number of wiki pages.
- * @param {Array<String>} page titles of the wiki pages
- * @param {function} success callback (Object editTokens: editTokens.get(pageTitle) = token)
+ * Recupera tokens de edição para um número de páginas wiki.
+ * @param {Array<String>} títulos das páginas wiki
+ * @param {function} mensagem de retorno de sucesso (Object editTokens: editTokens.get(pageTitle) = token)
  */
 function doEditTokenRequest(pageTitles, sucCallback) {
   var sPageTitles = pageTitles.join('|');
-  // get edit tokens
+  // obtém tokens de edição
   var tokenData = {
     'intoken': 'edit|watch'
   };
@@ -1439,14 +1439,12 @@ function doEditTokenRequest(pageTitles, sucCallback) {
 }
 
 /**
- * Edits a wiki page. (non-existing pages will be created automatically)
- * @param {String} title of the wiki page
- * @param {int} section within the wiki page; pass 0 to edit whole page
- * @param {String} edited page content
- * @param {String} edit summary
- * @param {function} success callback
+ * Edita uma página wikiEdits a wiki page. (páginas não existentes serão criadas automaticamente)
+ * @param {String} título da página wiki
+ * @param {String} resumo da edição
+ * @param {function} mensagem de retorno de sucesso
  */
-function doEditRequest(pageTitle, section, content, summary, sucCallback) {/* Q: what errors are possible? */
+function doEditRequest(pageTitle, section, content, summary, sucCallback) {
   AddinMooc_CONFIG.log(0, 'LOG_WEDIT', pageTitle, section);
   doEditTokenRequest([ pageTitle ], function(editTokens) {
     var editToken = editTokens.get(pageTitle);
@@ -1466,7 +1464,7 @@ function doEditRequest(pageTitle, section, content, summary, sucCallback) {/* Q:
       data: editData
     }).fail(function(jqXHR) {
       AddinMooc_CONFIG.log(1, 'ERR_WEDIT_REQ', pageTitle, jqXHR.status);
-    }).success(function(response) {//TODO handle errors
+    }).success(function(response) {
       AddinMooc_CONFIG.log(0, 'LOG_WEDIT_RES', JSON.stringify(response));
       sucCallback();
     });
@@ -1474,12 +1472,12 @@ function doEditRequest(pageTitle, section, content, summary, sucCallback) {/* Q:
 }
 
 /**
- * Adds a section to a wiki page. (non-existing pages will be created automatically)
- * @param {String} title of the wiki page
- * @param {String} title of the new section
- * @param {String} content of the new section
- * @param {String} edit summary
- * @param {function} success callback
+ * Adiciona uma seção a uma página wiki. (páginas não existentes serão criadas automaticamente)
+ * @param {String} título da página wiki
+ * @param {String} título da nova seção
+ * @param {String} conteúdo da nova seção
+ * @param {String} resumo da edição
+ * @param {function} mensagem de retorno de sucesso
  */
 function addSectionToPage(pageTitle, sectionTitle, content, summary, sucCallback) {
   AddinMooc_CONFIG.log(0, 'LOG_WADD', pageTitle, sectionTitle);
@@ -1500,7 +1498,7 @@ function addSectionToPage(pageTitle, sectionTitle, content, summary, sucCallback
       data: editData
     }).fail(function(jqXHR) {
       AddinMooc_CONFIG.log(1, 'ERR_WADD_REQ', pageTitle, sectionTitle, jqXHR.status);
-    }).success(function(response) {//TODO handle errors
+    }).success(function(response) {
       AddinMooc_CONFIG.log(0, 'LOG_WADD_RES', JSON.stringify(response));
       sucCallback();
     });
@@ -1508,9 +1506,9 @@ function addSectionToPage(pageTitle, sectionTitle, content, summary, sucCallback
 }
 
 /**
- * Parses a server response containing one or multiple edit tokens.
+ * Analisa uma resposta do servidor contendo um ou vários tokens de edição.
  * @param {JSON} tokenResponse
- * @return {Object} edit tokens object - you can retrieve the edit token by passing the page title to the object's 'get'-function
+ * @return {Object} edita o objeto token - você pode recuperar o token de edição passando o título da página para a função 'get' do objeto
  */
 function parseEditTokens(tokenResponse) {
   var hasTokens = false;
@@ -1543,7 +1541,7 @@ function parseEditTokens(tokenResponse) {
   if (crr) {
     var pages = crr;
     for (var pageId in pages) {
-      // page exists
+      // página existe
       if (pages.hasOwnProperty(pageId)) {
         var page = pages[pageId];
         editTokens.add(page.title, page.edittoken);
@@ -1554,41 +1552,41 @@ function parseEditTokens(tokenResponse) {
 }
 
 /**
- * Retrieves the index of a MOOC.
- * @param {String} title of the MOOC index page
- * @param {int} section within the index page; pass 0 to retrieve whole page
- * @param {function} success callback (String indexContent)
+ * Recupera o índice de um MOOC.
+ * @param {String} título da página índice do MOOC
+ * @param {int} seção dentro da página índice; passe 0 para recuperar a página inteira
+ * @param {function} mensagem de retorno de sucesso (String indexContent)
  */ 
 function getIndex(title, section, sucCallback) {
   doPageContentRequest(title, section, sucCallback);
 }
 
 /**
- * Retrieves the script of a MOOC item.
- * @param {Object} MOOC item
- * @param {function} success callback (String scriptContent)
- * @param {function} (optional) failure callback (Object jqXHR: HTTP request object)
+ * Recupera o roteiro de um item MOOC. 
+ * @param {Object} item MOOC
+ * @param {function} mensagem de retorno de sucesso (String scriptContent)
+ * @param {function} (opcional) mensagem de retorno de falha (Object jqXHR: HTTP request object)
  */
 function getScript(item, sucCallback, errorCallback) {
   doPageContentRequest(item.fullPath + '/script', 0, sucCallback, errorCallback);
 }
 
 /**
- * Retrieves the quiz of a MOOC item.
- * @param {Object} MOOC item
- * @param {function} success callback (String quizContent)
- * @param {function} (optional) failure callback (Object jqXHR: HTTP request object)
+ * Recupera o quiz de um item MOOC.
+ * @param {Object} item MOOC
+ * @param {function} mensagem de retorno de sucesso (String quizContent)
+ * @param {function} (opcional) mensagem de retorno de falha (Object jqXHR: HTTP request object)
  */
 function getQuiz(item, sucCallback, errorCallback) {
   doPageContentRequest(item.fullPath + '/quiz', 0, sucCallback, errorCallback);
 }
 
 /**
- * Updates the script of a MOOC item.
- * @param {Object} MOOC item
- * @param {String} updated script content
- * @param {String} edit summary; uses generated summary if empty
- * @param {function} success callback
+ * Atualiza o roteiro de um item MOOC.
+ * @param {Object} item MOOC
+ * @param {String} conteúdo do roteiro atualizado
+ * @param {String} resumo da edição; usa resumo gerado se vazio
+ * @param {function} mensagem de retorno de sucesso
  */
 function updateScript(item, scriptText, summary, sucCallback) {
   var editSummary = summary;
@@ -1599,11 +1597,11 @@ function updateScript(item, scriptText, summary, sucCallback) {
 }
 
 /**
- * Updates the quiz of a MOOC item.
- * @param {Object} MOOC item
- * @param {String} updated quiz content
- * @param {String} edit summary; uses generated summary if empty
- * @param {function} success callback
+ * Atualiza o quiz de um item MOOC.
+ * @param {Object} item MOOC
+ * @param {String} conteudo atualizado do quiz
+ * @param {String} resumo de edição; usa resumo gerado se vazio
+ * @param {function} mensagem de retorno de sucesso
  */
 function updateQuiz(item, quizText, summary, sucCallback) {
   var editSummary = summary;
@@ -1614,37 +1612,37 @@ function updateQuiz(item, quizText, summary, sucCallback) {
 }
 
 /**
- * Updates the MOOC index containing the given MOOC item.
- * @param {Object} MOOC item
- * @param {String} edit summary appendix; will be appended to a generated summary specifying the MOOC item passed
- * @param {function} success callback
+ * Atualiza o índice MOOC contendo o item MOOC fornecido.
+ * @param {Object} item MOOC
+ * @param {String} apêncide do resumo de edição; será anexado a um resumo gerado especificando o item MOOC passado
+ * @param {function} mensagem de retorno de sucesso
  */
 function updateIndex(item, summaryAppendix, sucCallback) {
   var summary = item.header.type + ' ' + item.header.path + ': ' + summaryAppendix;
-  if (item.header.path === null) {// changing root item
+  if (item.header.path === null) {// mudando item raiz
     summary = item.header.type + ':' + summaryAppendix;
   }
   doEditRequest(item.index.title, item.indexSection, item.tostring(), summary, sucCallback);
 }
 
 /**
- * Creates a wiki page.
- * @param {String} title of the new page
- * @param {String} content of the new page
- * @param {String} edit summary
- * @param {function} success callback
+ * Cria uma página wiki.
+ * @param {String} título da nova página
+ * @param {String} conteúdo da nova página
+ * @param {String} resumo da edição
+ * @param {function} mensagem de retorno de sucesso
  */
 function createPage(pageTitle, content, summary, sucCallback) {
   doEditRequest(pageTitle, 0, content, summary, sucCallback);
 }
 
 /**
- * Adds a child item to a MOOC item.
- * @param {String} type of the new item
- * @param {String} name of the new item
- * @param {Object} MOOC item the child will be added to
- * @param {String} edit summary appendix for MOOC index edit; uses generated summary appendix if empty
- * @param {function} success callback
+ * Adiciona um subitem a um item MOOC.
+ * @param {String} tipo do novo item
+ * @param {String} nome do novo item
+ * @param {Object} item MOOC ao qual o subitem será adicionado
+ * @param {String} apêndice do resumo de edição para a edição do índice MOOC; usa apêndice de resumo gerado se vazio
+ * @param {function} mensagem de retorno de sucesso
  */
 function addChild(type, name, parent, summary, sucCallback) {
   // add item to parent
@@ -1652,16 +1650,16 @@ function addChild(type, name, parent, summary, sucCallback) {
   var header = Header(parentHeader.level + 1, type, name, null);
   parent.childLines.push(header.tostring());
   AddinMooc_CONFIG.log(0, 'LOG_ADD_CHILD', parentHeader.type, parentHeader.title, header.tostring());
-  // update MOOC index at parent position
+  // atualiza o índice do MOOC na posição principal
   var itemIdentifier = type + ' ' + parentHeader.path + '/' + name;
-  if (parentHeader.path === null) {// parent is root
+  if (parentHeader.path === null) 
     itemIdentifier = type + ' ' + name;
   }
   if (summary === '') {
     summary = itemIdentifier + ' added';
   }
   updateIndex(parent, summary, function() {
-    // create item page
+    // cria página do item
     doEditRequest(parent.fullPath + '/' + name, 0, parent.getInvokeCode(), 'invoke page for MOOC ' + itemIdentifier + ' created', sucCallback);
   });
 }
